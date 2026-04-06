@@ -1,6 +1,6 @@
 <head>
   <meta charset="UTF-8">
-    <title>SHAKA PLAYER</title>
+    <title>SPORTLINK Player</title>
 
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -424,7 +424,7 @@
   right: 5px;
   top: 10px;
              }
-.telegram-popup {
+.whatsapp-popup {
     position: fixed; 
     top: 50%; 
     left: 50%;
@@ -447,7 +447,7 @@
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
-.telegram-popup h2 { 
+.whatsapp-popup h2 { 
     color: #1e293b; 
     font-size: 1.5rem; 
     margin-bottom: 0.5rem; 
@@ -457,18 +457,19 @@
     gap: 10px;
 }
 
-.telegram-popup .fa-telegram { 
-    color: #2AABEE; 
+.whatsapp-popup .wa-icon { 
+    color: #25D366; 
+    font-size: 1.8rem;
 }
 
-.telegram-popup p { 
+.whatsapp-popup p { 
     color: #64748b; 
     font-size: 0.95rem; 
     margin-bottom: 1.5rem; 
     line-height: 1.6;
 }
 
-.telegram-popup .popup-button {
+.whatsapp-popup .popup-button {
     width: 100%;
     padding: 1rem;
     margin-top: 0.75rem;
@@ -482,25 +483,25 @@
     border: none;
 }
 
-.telegram-popup .join-btn {
-    background: #2AABEE;
+.whatsapp-popup .join-btn {
+    background: #25D366;
     color: white;
-    box-shadow: 0 4px 15px rgba(42, 171, 238, 0.3);
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
     border: none;
 }
 
-.telegram-popup .join-btn:hover { 
+.whatsapp-popup .join-btn:hover { 
     transform: translateY(-2px); 
-    box-shadow: 0 8px 20px rgba(42, 171, 238, 0.4); 
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); 
 }
 
-.telegram-popup .joined-btn {
+.whatsapp-popup .joined-btn {
     background: transparent;
     color: #64748b;
     border: 1px solid rgba(0,0,0,0.1);
 }
 
-.telegram-popup .joined-btn:hover { 
+.whatsapp-popup .joined-btn:hover { 
     background: rgba(0,0,0,0.05); 
     color: #1e293b; 
 }
@@ -509,11 +510,11 @@
 
   
 </head>
-<div class="telegram-popup" id="telegramPopup">
-    <h2 id="popup-title"><i class="fa-brands fa-telegram"></i> Join The Action</h2>
-    <p>Get instant updates, match highlights, and exclusive links on our official channel.</p>
-    <a href="https://t.me/+JSkwy86_04M2Zjdl" target="_blank" rel="noopener noreferrer" class="popup-button join-btn">Join Channel Now</a>
-    <button class="popup-button joined-btn" onclick="document.getElementById('telegramPopup').style.display='none';">I've Already Joined</button>
+<div class="whatsapp-popup" id="whatsappPopup">
+    <h2><span class="wa-icon">📱</span> Join Our Channel</h2>
+    <p>Get instant updates, match highlights, and exclusive links on our official WhatsApp channel.</p>
+    <a href="https://whatsapp.com/channel/0029VbC2oQsC6ZvmwpR3v73v" target="_blank" rel="noopener noreferrer" class="popup-button join-btn">Follow on WhatsApp</a>
+    <button class="popup-button joined-btn" onclick="document.getElementById('whatsappPopup').style.display='none';">Already Following</button>
 </div>
 
 <div class="video-container">
@@ -669,6 +670,6 @@ console.log('Stream loaded successfully.');
 
 // Show popup after delay (2 seconds)
 setTimeout(() => { 
-    document.getElementById('telegramPopup').style.display = 'block'; 
+    document.getElementById('whatsappPopup').style.display = 'block'; 
 }, 2000);
 </script>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Run Machine</title>
+  <title>SPORTLINK</title>
   <!-- Tailwind + Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -282,9 +282,9 @@
   <div class="text-center mb-14 mt-2">
     <div class="inline-flex items-center gap-4 bg-[#0f1a2b] py-4 px-10 rounded-full border border-blue-700/40 shadow-2xl backdrop-blur-xl">
       <i class="fas fa-bolt text-yellow-400 text-xl"></i>
-      <span class="text-3xl font-black tracking-wider bg-gradient-to-r from-white via-blue-200 to-blue-400 bg-clip-text text-transparent">FANCODE</span>
+      <span class="text-3xl font-black tracking-wider bg-gradient-to-r from-white via-blue-200 to-blue-400 bg-clip-text text-transparent">SPORTLINK</span>
     </div>
-    <p class="text-gray-700 text-xs mt-4 tracking-[0.3rem] font-mono">Run Machine</p>
+    <p class="text-gray-700 text-xs mt-4 tracking-[0.3rem] font-mono">LIVE SPORTS HUB</p>
   </div>
 
   <!-- matches container -->
@@ -300,100 +300,61 @@
   </div>
 
   <script>
-    const DATA_URL = "https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json";
+    const DATA_URL = "https://raw.githubusercontent.com/drmlive/fancode-live-events/refs/heads/main/fancode.json";
     const PLAYER_URL = "/fc-play?url=";
 
     const container = document.getElementById('matches-container');
     let allMatches = [];
-
-    // get UPPAR image (BG_IMAGE is the top thumbnail)
-    function getUpparImage(match) {
-      if (match.image_cdn) {
-        // BG_IMAGE is the uppar (hero) image – exactly what you wanted
-        return match.image_cdn.BG_IMAGE || match.image_cdn.CLOUDFARE || match.image_cdn.TATAPLAY || match.image_cdn.APP || match.image;
-      }
-      return match.image || 'https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg';
-    }
-
-    // extract cricket score
-    function getScore(team) {
-      if (team?.cricketScore?.length) {
-        const s = team.cricketScore[0];
-        if (s.runs !== undefined && s.wickets !== undefined) {
-          return `${s.runs}/${s.wickets} ${s.overs ? '('+s.overs+')' : ''}`;
-        }
-      }
-      return null;
-    }
 
     function renderMatches(matches) {
       container.innerHTML = '';
 
       matches.forEach((match, idx) => {
         const isLive = match.status === 'LIVE';
-        const imageSrc = getUpparImage(match);    // ✅ UPPAR thumbnail used here
+        const imageSrc = match.src || 'https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg';
+        const category = match.event_category || 'Sports';
 
-        const t1 = match.team?.[0];
-        const t2 = match.team?.[1];
-        const category = match.category || 'Cricket';
-        const lang = match.language ? match.language.charAt(0) + match.language.slice(1).toLowerCase() : '';
-
-        // scores only for cricket live
-        let t1Score = (isLive && category === 'Cricket' && t1) ? getScore(t1) : null;
-        let t2Score = (isLive && category === 'Cricket' && t2) ? getScore(t2) : null;
-
-        // build flag row
-        let flagHtml = '';
-        if (t1 && t2) {
-          flagHtml = `
+        // build team pills
+        let teamHtml = '';
+        if (match.team_1 && match.team_2) {
+          teamHtml = `
             <div class="flag-strip">
               <div class="flag-pill">
-                <img src="${t1.flag?.src || 'https://www.fancode.com/favicon.ico'}" alt="${t1.shortName}" onerror="this.src='https://www.fancode.com/favicon.ico'">
-                <span>${t1.shortName || 'T1'}</span>
+                <span>${match.team_1}</span>
               </div>
               <div class="flag-pill">
-                <img src="${t2.flag?.src || 'https://www.fancode.com/favicon.ico'}" alt="${t2.shortName}" onerror="this.src='https://www.fancode.com/favicon.ico'">
-                <span>${t2.shortName || 'T2'}</span>
+                <span>${match.team_2}</span>
               </div>
-              ${lang ? `<span class="ml-auto text-[0.65rem] font-bold bg-blue-900/70 px-4 py-1.5 rounded-full border border-blue-600/60">${lang}</span>` : ''}
+              <span class="ml-auto text-[0.65rem] font-bold bg-blue-900/70 px-4 py-1.5 rounded-full border border-blue-600/60">${category}</span>
             </div>
           `;
-        } else {
-          flagHtml = `<div class="h-6"></div>`;
         }
 
-        // scores html if available
-        const scoreHtml = (t1Score || t2Score) ? `
-          <div class="score-sleek">
-            <i class="fas fa-bolt text-yellow-400 text-xs"></i>
-            <span>${t1Score || '0/0'} · ${t2Score || '0/0'}</span>
-          </div>
-        ` : '';
-
-        // watch button logic
-        const watchAction = isLive ? `openQuality(${idx})` : '';
-        const watchBtnClass = isLive ? 'watch-sleek' : 'watch-sleek not-live';
-        const watchIcon = isLive ? '<i class="fas fa-play-circle"></i> WATCH LIVE' : '<i class="fas fa-hourglass-half"></i> UPCOMING';
+        // watch button — directly play the m3u8 via proxy
+        const hasStream = isLive && (match.adfree_url || match.dai_url);
+        const watchAction = hasStream ? `playStream(${idx})` : '';
+        const watchBtnClass = hasStream ? 'watch-sleek' : 'watch-sleek not-live';
+        const watchIcon = isLive
+          ? (hasStream ? '<i class="fas fa-play-circle"></i> WATCH LIVE' : '<i class="fas fa-lock"></i> NO STREAM')
+          : '<i class="fas fa-hourglass-half"></i> UPCOMING';
 
         const card = document.createElement('div');
         card.className = 'sleek-card';
 
         card.innerHTML = `
           <div class="sleek-image">
-            <img src="${imageSrc}" alt="match cover" loading="lazy">
+            <img src="${imageSrc}" alt="match cover" loading="lazy" onerror="this.src='https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg'">
             ${isLive ? '<span class="live-glow"><i class="fas fa-circle text-[0.5rem] mr-1 align-middle"></i> LIVE</span>' : ''}
           </div>
 
           <div class="p-6 flex flex-col flex-grow">
             <div class="tourney-sleek">
-              <i class="fas fa-medal text-blue-400"></i> ${match.tournament || 'INTERNATIONAL'}
+              <i class="fas fa-medal text-blue-400"></i> ${match.event_name || 'INTERNATIONAL'}
             </div>
 
-            <h3 class="title-sleek">${match.title || 'match'}</h3>
+            <h3 class="title-sleek">${match.title || match.match_name || 'Match'}</h3>
 
-            ${flagHtml}
-
-            ${scoreHtml}
+            ${teamHtml}
 
             <div class="meta-light">
               <span><i class="far fa-calendar-alt mr-1"></i>${match.startTime || 'TBD'}</span>
@@ -410,55 +371,18 @@
       });
     }
 
-    // open quality modal from auto_streams[0].auto
-    function openQuality(index) {
+    // Play stream — navigate to player with proxied m3u8 URL
+    function playStream(index) {
       const match = allMatches[index];
-      const streamData = match.auto_streams?.[0]?.auto || '';
-
-      const list = document.getElementById('quality-list');
-      list.innerHTML = '';
-
-      if (!streamData) {
-        alert('stream not available');
-        return;
+      const streamUrl = match.adfree_url || match.dai_url;
+      if (streamUrl) {
+        window.location.href = PLAYER_URL + encodeURIComponent(streamUrl);
+      } else {
+        alert('Stream not available');
       }
-
-      const lines = streamData.split('\n');
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('RESOLUTION=')) {
-          const matchRes = lines[i].match(/RESOLUTION=\d+x(\d+)/);
-          if (!matchRes) continue;
-          const resText = matchRes[1] + 'p';
-          const streamLine = lines[i + 1]?.trim();
-          if (streamLine && (streamLine.startsWith('http') || streamLine.startsWith('/'))) {
-            const btn = document.createElement('div');
-            btn.className = 'quality-sleek-btn';
-            btn.innerHTML = `<span>${resText}</span><i class="fas fa-chevron-right text-blue-400"></i>`;
-            btn.onclick = () => {
-              window.location.href = PLAYER_URL + encodeURIComponent(streamLine);
-            };
-            list.appendChild(btn);
-          }
-        }
-      }
-
-      if (list.children.length === 0) {
-        list.innerHTML = '<div class="text-gray-400 py-5">no alternate qualities</div>';
-      }
-
-      document.getElementById('quality-modal').style.display = 'flex';
     }
 
-    window.closeModal = function() {
-      document.getElementById('quality-modal').style.display = 'none';
-    };
-
-    // telegram prompt
-    if (confirm("📢 Join Telegram Channel For links")) {
-      window.open("https://t.me/+JSkwy86_04M2Zjdl", '_blank');
-    }
-
-    // fetch data
+    // fetch data from drmlive
     fetch(DATA_URL)
       .then(res => res.json())
       .then(data => {
@@ -466,13 +390,13 @@
         renderMatches(allMatches);
       })
       .catch(() => {
-        container.innerHTML = '<div class="col-span-full text-center text-gray-600 text-xl">failed to load sleek matches</div>';
+        container.innerHTML = '<div class="col-span-full text-center text-gray-600 text-xl">Failed to load matches</div>';
       });
 
     // click outside modal
     window.onclick = function(e) {
       const modal = document.getElementById('quality-modal');
-      if (e.target === modal) closeModal();
+      if (e.target === modal) modal.style.display = 'none';
     };
   </script>
 </body>
