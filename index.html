@@ -14,46 +14,109 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-color: #070b14;
+      --text-color: white;
+      --card-bg: rgba(12, 20, 35, 0.75);
+      --card-border: rgba(59, 130, 246, 0.18);
+      --card-hover-border: #3b82f6;
+      --card-shadow: 0 25px 40px -18px #000000;
+      --card-shadow-inset: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      --card-hover-shadow: 0 35px 55px -18px #2563eb;
+      --card-hover-shadow-inset: 0 0 0 1.5px #3b82f6 inset;
+      --image-bg: #0c1422;
+      --image-border: rgba(59, 130, 246, 0.2);
+      --flag-bg: rgba(255, 255, 255, 0.03);
+      --flag-border: rgba(255, 255, 255, 0.06);
+      --flag-text: #e2e8f0;
+      --flag-icon-bg: #1e2a4a;
+      --title-gradient: linear-gradient(to right, #fff, #d9e6ff);
+      --watch-bg: linear-gradient(135deg, #2563eb, #1d4ed8);
+      --watch-shadow: 0 15px 20px -12px #1e3a8a;
+      --watch-notlive-bg: #1e293b;
+      --watch-notlive-color: #7789aa;
+      --watch-notlive-border: #334155;
+      --header-bg: #0f1a2b;
+      --header-border: rgba(29, 78, 216, 0.4);
+      --modal-bg: rgba(12, 22, 40, 0.95);
+      --quality-btn-bg: #1a2742;
+      --quality-btn-border: #314e7c;
+      --quality-btn-hover: #253b62;
+      --meta-color: #6f7d9c;
+    }
+
+    body.light-mode {
+      --bg-color: #f8fafc;
+      --text-color: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.05);
+      --card-hover-border: #3b82f6;
+      --card-shadow: 0 15px 30px -10px rgba(0,0,0,0.08);
+      --card-shadow-inset: 0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+      --card-hover-shadow: 0 25px 45px -10px rgba(59,130,246,0.25);
+      --card-hover-shadow-inset: 0 0 0 1.5px #3b82f6 inset;
+      --image-bg: #e2e8f0;
+      --image-border: rgba(0, 0, 0, 0.05);
+      --flag-bg: rgba(0, 0, 0, 0.02);
+      --flag-border: rgba(0, 0, 0, 0.08);
+      --flag-text: #334155;
+      --flag-icon-bg: #f8fafc;
+      --title-gradient: linear-gradient(to right, #0f172a, #334155);
+      --watch-bg: linear-gradient(135deg, #3b82f6, #2563eb);
+      --watch-shadow: 0 15px 20px -12px rgba(37,99,235,0.4);
+      --watch-notlive-bg: #e2e8f0;
+      --watch-notlive-color: #64748b;
+      --watch-notlive-border: #cbd5e1;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --header-border: rgba(0, 0, 0, 0.08);
+      --modal-bg: rgba(255, 255, 255, 0.95);
+      --quality-btn-bg: #f8fafc;
+      --quality-btn-border: #cbd5e1;
+      --quality-btn-hover: #f1f5f9;
+      --meta-color: #64748b;
+    }
+
     body {
-      background: #070b14;
+      background: var(--bg-color);
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: white;
+      color: var(--text-color);
       padding: 2rem 1.5rem 4rem;
       max-width: 1440px;
       margin: 0 auto;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     
     .sleek-card {
-      background: rgba(12, 20, 35, 0.75);
+      background: var(--card-bg);
       backdrop-filter: blur(16px) saturate(180%);
       -webkit-backdrop-filter: blur(16px) saturate(180%);
-      border: 1px solid rgba(59, 130, 246, 0.18);
+      border: 1px solid var(--card-border);
       border-radius: 2.8rem;
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       box-shadow: 
-        0 25px 40px -18px #000000,
-        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+        var(--card-shadow),
+        var(--card-shadow-inset);
       display: flex;
       flex-direction: column;
     }
 
     .sleek-card:hover {
       transform: translateY(-10px) scale(1.01);
-      border-color: #3b82f6;
+      border-color: var(--card-hover-border);
       box-shadow: 
-        0 35px 55px -18px #2563eb,
-        0 0 0 1.5px #3b82f6 inset;
+        var(--card-hover-shadow),
+        var(--card-hover-shadow-inset);
     }
 
     /* 🖼️ IMAGE WRAPPER - SHOWS TOP PART (UPPAR) PERFECTLY */
     .sleek-image {
       position: relative;
       height: 220px;
-      background: #0c1422;
+      background: var(--image-bg);
       overflow: hidden;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      border-bottom: 1px solid var(--image-border);
     }
 
     .sleek-image img {
@@ -102,8 +165,8 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--flag-bg);
+      border: 1px solid var(--flag-border);
       padding: 0.3rem 1rem 0.3rem 0.6rem;
       border-radius: 40px;
       backdrop-filter: blur(4px);
@@ -121,13 +184,13 @@
       border-radius: 50%;
       object-fit: cover;
       border: 1.5px solid #3b82f6;
-      background: #1e2a4a;
+      background: var(--flag-icon-bg);
     }
 
     .flag-pill span {
       font-weight: 600;
       font-size: 0.8rem;
-      color: #e2e8f0;
+      color: var(--flag-text);
       letter-spacing: 0.2px;
     }
 
@@ -149,7 +212,7 @@
 
     /* 🎬 WATCH BUTTON — extra sleek */
     .watch-sleek {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      background: var(--watch-bg);
       border: none;
       border-radius: 24px;
       padding: 1rem 1.2rem;
@@ -159,7 +222,7 @@
       margin-top: auto;
       cursor: pointer;
       transition: all 0.25s;
-      box-shadow: 0 15px 20px -12px #1e3a8a;
+      box-shadow: var(--watch-shadow);
       border: 1px solid #60a5fa60;
       letter-spacing: 0.5px;
       backdrop-filter: blur(5px);
@@ -171,10 +234,10 @@
     }
 
     .watch-sleek.not-live {
-      background: #1e293b;
+      background: var(--watch-notlive-bg);
       box-shadow: none;
-      color: #7789aa;
-      border-color: #334155;
+      color: var(--watch-notlive-color);
+      border-color: var(--watch-notlive-border);
       cursor: not-allowed;
       pointer-events: none;
       opacity: 0.7;
@@ -198,7 +261,7 @@
       line-height: 1.25;
       margin: 0.2rem 0 0.1rem;
       letter-spacing: -0.3px;
-      background: linear-gradient(to right, #fff, #d9e6ff);
+      background: var(--title-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -209,7 +272,7 @@
       display: flex;
       gap: 1rem;
       font-size: 0.7rem;
-      color: #6f7d9c;
+      color: var(--meta-color);
       font-weight: 500;
       margin: 0.3rem 0 1rem;
     }
@@ -227,19 +290,23 @@
     }
 
     .modal-sleek {
-      background: rgba(12, 22, 40, 0.95);
+      background: var(--modal-bg);
       border: 1px solid #3b82f6;
       border-radius: 3rem;
       padding: 2.2rem 2rem;
       width: 90%;
       max-width: 380px;
       text-align: center;
-      box-shadow: 0 40px 80px -12px #000000, 0 0 0 1px #3b82f6 inset;
+      box-shadow: 0 40px 80px -12px rgba(0,0,0,0.5), 0 0 0 1px #3b82f6 inset;
+    }
+    
+    .modal-sleek h3 {
+      color: var(--text-color);
     }
 
     .quality-sleek-btn {
-      background: #1a2742;
-      border: 1px solid #314e7c;
+      background: var(--quality-btn-bg);
+      border: 1px solid var(--quality-btn-border);
       width: 100%;
       padding: 1.1rem 1.8rem;
       margin-bottom: 14px;
@@ -248,16 +315,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: white;
+      color: var(--text-color);
       transition: 0.2s;
       cursor: pointer;
     }
 
     .quality-sleek-btn:hover {
-      background: #253b62;
+      background: var(--quality-btn-hover);
       border-color: #3b82f6;
       transform: scale(1.02);
-      box-shadow: 0 8px 14px -8px #0a1a31;
+      box-shadow: 0 8px 14px -8px rgba(0,0,0,0.2);
     }
 
     .close-sleek {
@@ -279,12 +346,20 @@
 <body>
 
   <!-- header premium sleek -->
-  <div class="text-center mb-14 mt-2">
-    <div class="inline-flex items-center gap-4 bg-[#0f1a2b] py-4 px-10 rounded-full border border-blue-700/40 shadow-2xl backdrop-blur-xl">
+  <div class="text-center mb-14 mt-2 relative">
+    <div class="inline-flex items-center gap-4 py-4 px-10 rounded-full shadow-2xl backdrop-blur-xl transition-all duration-300" style="background: var(--header-bg); border: 1px solid var(--header-border);">
       <i class="fas fa-bolt text-yellow-400 text-xl"></i>
-      <span class="text-3xl font-black tracking-wider bg-gradient-to-r from-white via-blue-200 to-blue-400 bg-clip-text text-transparent">SPORTLINK</span>
+      <span class="text-3xl font-black tracking-wider bg-clip-text text-transparent theme-title-gradient" style="background-image: var(--title-gradient);">
+        SPORTLINK
+      </span>
     </div>
-    <p class="text-gray-700 text-xs mt-4 tracking-[0.3rem] font-mono">Fancode - Sayan</p>
+    <p class="text-gray-500 text-xs mt-4 tracking-[0.3rem] font-mono">Fancode - Sayan</p>
+    
+    <!-- Theme Toggle inside header area -->
+    <button id="theme-toggle" class="absolute top-1 right-2 sm:right-6 p-3 rounded-full shadow-lg backdrop-blur-xl transition-all hover:scale-110 active:scale-95"
+            style="background: var(--header-bg); border: 1px solid var(--header-border); color: var(--text-color);">
+      <i class="fas fa-sun" id="theme-icon"></i>
+    </button>
   </div>
 
   <!-- matches container -->
@@ -293,7 +368,7 @@
   <!-- quality modal -->
   <div id="quality-modal" class="modal-overlay">
     <div class="modal-sleek">
-      <h3 class="text-2xl font-bold mb-7 text-white">select quality</h3>
+      <h3 class="text-2xl font-bold mb-7">select quality</h3>
       <div id="quality-list" class="mb-4"></div>
       <div class="close-sleek" onclick="closeModal()">✕ close</div>
     </div>
@@ -398,6 +473,40 @@
       const modal = document.getElementById('quality-modal');
       if (e.target === modal) modal.style.display = 'none';
     };
+
+    // theme toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    const savedTheme = localStorage.getItem('theme');
+
+    // Function to apply theme
+    function setTheme(isLight) {
+      if (isLight) {
+        document.body.classList.add('light-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.body.classList.remove('light-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Initial load
+    if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+      setTheme(true);
+    } else {
+      setTheme(false);
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isLightMode = document.body.classList.contains('light-mode');
+      setTheme(!isLightMode);
+    });
   </script>
 </body>
 </html>
