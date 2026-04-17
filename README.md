@@ -1,7 +1,7 @@
 <div align="center">
 
 # ⚽ 🏏 📡 FanCode Live Events Auto-Sync
-| 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode-live.vercel.app/) |
+| 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode18.pages.dev/) |
 
 ### by **Sayan Pal**
 
@@ -25,23 +25,11 @@ This automated service is based on data collected and maintained by others. Full
 
 | Detail | Link |
 |--------|------|
-| 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode-live.vercel.app/) |
+| 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode18.pages.dev/) |
 | 💬 Telegram Channel | [@TestCricket18](https://t.me/TestCricket18) |
 | Whatsapp Channel | [@sportlink](https://whatsapp.com/channel/0029VbC2oQsC6ZvmwpR3v73v)
 ---
 
-## 🎯 Core Synchronization Details
-
-| Component | Detail | Setting |
-|-----------|--------|---------|
-| 📄 Data File | `fancode.json` | JSON Format |
-| ⏱️ Sync Frequency | Every 60 Seconds | Auto-Poll |
-| 🔄 Update Mode | Client-Side Fetch | Zero Backend |
-| 📡 Data Source | `raw.githubusercontent.com` | Live Pull |
-| 🎥 Stream Format | HLS / M3U8 | HLS.js Player |
-| 🖼️ Thumbnail Proxy | `wsrv.nl` | CORS Bypass |
-
----
 
 ## ✨ Features
 
@@ -51,13 +39,7 @@ This automated service is based on data collected and maintained by others. Full
 - 📱 **Fully responsive** — works on mobile, tablet, and desktop
 - 🖼️ **Smart thumbnails** — proxied through `wsrv.nl` to bypass hotlink blocking
 - ⚽ 🏏 ⛳ **Multi-sport support** — Football, Cricket, Golf, Tennis & more
-- 🔁 **Fallback stream** — plays backup URL if primary stream is unavailable
-- 🔔 **Telegram popup** — one-time channel join prompt for visitors
 
----
-
-
-```
 
 ---
 
