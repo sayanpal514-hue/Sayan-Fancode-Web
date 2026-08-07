@@ -25,7 +25,6 @@ This automated service is based on data collected and maintained by others. Full
 | Detail | Link |
 |--------|------|
 | 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode18.pages.dev/) |
-| 💬 Telegram Channel | [@TestCricket18](https://t.me/TestCricket18) |
 | Whatsapp Channel | [@sportlink](https://whatsapp.com/channel/0029VbC2oQsC6ZvmwpR3v73v)
 ---
 
@@ -62,7 +61,6 @@ We encourage developers and enthusiasts to:
 
 **Sayan Pal**
 
-[![Telegram](https://img.shields.io/badge/Telegram-Join%20Channel-2196F3?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/TestCricket18)
 
 *Built with ❤️ for sports fans everywhere*
 
