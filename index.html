@@ -1,519 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPORTLINK</title>
-  <link rel="icon" type="image/png" href="https://www.fancode.com/skillup-uploads/fc-web-logo/favicon.png">
-  <!-- Tailwind + Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
-    :root {
-      --bg-color: #070b14;
-      --text-color: white;
-      --card-bg: rgba(12, 20, 35, 0.75);
-      --card-border: rgba(59, 130, 246, 0.18);
-      --card-hover-border: #3b82f6;
-      --card-shadow: 0 25px 40px -18px #000000;
-      --card-shadow-inset: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-      --card-hover-shadow: 0 35px 55px -18px #2563eb;
-      --card-hover-shadow-inset: 0 0 0 1.5px #3b82f6 inset;
-      --image-bg: #0c1422;
-      --image-border: rgba(59, 130, 246, 0.2);
-      --flag-bg: rgba(255, 255, 255, 0.03);
-      --flag-border: rgba(255, 255, 255, 0.06);
-      --flag-text: #e2e8f0;
-      --flag-icon-bg: #1e2a4a;
-      --title-gradient: linear-gradient(to right, #fff, #d9e6ff);
-      --watch-bg: linear-gradient(135deg, #2563eb, #1d4ed8);
-      --watch-shadow: 0 15px 20px -12px #1e3a8a;
-      --watch-notlive-bg: #1e293b;
-      --watch-notlive-color: #7789aa;
-      --watch-notlive-border: #334155;
-      --header-bg: #0f1a2b;
-      --header-border: rgba(29, 78, 216, 0.4);
-      --modal-bg: rgba(12, 22, 40, 0.95);
-      --quality-btn-bg: #1a2742;
-      --quality-btn-border: #314e7c;
-      --quality-btn-hover: #253b62;
-      --meta-color: #6f7d9c;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body.light-mode {
-      --bg-color: #f8fafc;
-      --text-color: #0f172a;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(0, 0, 0, 0.05);
-      --card-hover-border: #3b82f6;
-      --card-shadow: 0 15px 30px -10px rgba(0,0,0,0.08);
-      --card-shadow-inset: 0 0 0 1px rgba(0, 0, 0, 0.02) inset;
-      --card-hover-shadow: 0 25px 45px -10px rgba(59,130,246,0.25);
-      --card-hover-shadow-inset: 0 0 0 1.5px #3b82f6 inset;
-      --image-bg: #e2e8f0;
-      --image-border: rgba(0, 0, 0, 0.05);
-      --flag-bg: rgba(0, 0, 0, 0.02);
-      --flag-border: rgba(0, 0, 0, 0.08);
-      --flag-text: #334155;
-      --flag-icon-bg: #f8fafc;
-      --title-gradient: linear-gradient(to right, #0f172a, #334155);
-      --watch-bg: linear-gradient(135deg, #3b82f6, #2563eb);
-      --watch-shadow: 0 15px 20px -12px rgba(37,99,235,0.4);
-      --watch-notlive-bg: #e2e8f0;
-      --watch-notlive-color: #64748b;
-      --watch-notlive-border: #cbd5e1;
-      --header-bg: rgba(255, 255, 255, 0.85);
-      --header-border: rgba(0, 0, 0, 0.08);
-      --modal-bg: rgba(255, 255, 255, 0.95);
-      --quality-btn-bg: #f8fafc;
-      --quality-btn-border: #cbd5e1;
-      --quality-btn-hover: #f1f5f9;
-      --meta-color: #64748b;
-    }
+<title>SPORTLINK - FANCODE</title>
 
-    body {
-      background: var(--bg-color);
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: var(--text-color);
-      padding: 2rem 1.5rem 4rem;
-      max-width: 1440px;
-      margin: 0 auto;
-      transition: background 0.4s ease, color 0.4s ease;
-    }
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    
-    .sleek-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      border: 1px solid var(--card-border);
-      border-radius: 2.8rem;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: 
-        var(--card-shadow),
-        var(--card-shadow-inset);
-      display: flex;
-      flex-direction: column;
-    }
+<!-- Tailwind -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    .sleek-card:hover {
-      transform: translateY(-10px) scale(1.01);
-      border-color: var(--card-hover-border);
-      box-shadow: 
-        var(--card-hover-shadow),
-        var(--card-hover-shadow-inset);
-    }
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    /* 🖼️ IMAGE WRAPPER - SHOWS TOP PART (UPPAR) PERFECTLY */
-    .sleek-image {
-      position: relative;
-      height: 220px;
-      background: var(--image-bg);
-      overflow: hidden;
-      border-bottom: 1px solid var(--image-border);
-    }
 
-    .sleek-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 15%;  /* 👈 UPPAR — shows top part of 16:9 images */
-      transition: transform 0.7s ease, filter 0.5s ease;
-      filter: brightness(0.95) contrast(1.05);
-    }
+<style>
+body{
+background:#0a0f1c;
+font-family:'Poppins',sans-serif;
+color:#edf2f7;
+}
 
-    .sleek-card:hover .sleek-image img {
-      transform: scale(1.07);
-      filter: brightness(1.05) contrast(1.1);
-    }
+button{
+font-family:'Poppins',sans-serif;
+}
 
-    /* 🔴 LIVE BADGE — ULTRA GLOW */
-    .live-glow {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      background: #dc2626;
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 0.4rem 1.2rem;
-      border-radius: 40px;
-      letter-spacing: 0.7px;
-      box-shadow: 0 0 20px #dc2626, 0 0 40px #dc2626aa;
-      border: 1px solid #ffb3b3;
-      backdrop-filter: blur(4px);
-      z-index: 10;
-      text-transform: uppercase;
-    }
+.match-tile{
+background:#131d2f;
+border-radius:32px;
+border:1px solid #253247;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+box-shadow:0 15px 30px -10px rgba(0,0,0,0.8);
+transition:.25s;
+}
 
-    /* 🎌 FLAG CONTAINER — super clean */
-    .flag-strip {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 0.8rem 0 0.7rem;
-      flex-wrap: wrap;
-    }
+.match-tile:hover{
+background:#17253b;
+border-color:#3b82f6;
+transform:scale(1.02) translateY(-4px);
+box-shadow:0 25px 40px -8px #1e3a8a40;
+}
 
-    .flag-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--flag-bg);
-      border: 1px solid var(--flag-border);
-      padding: 0.3rem 1rem 0.3rem 0.6rem;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
-      transition: 0.2s;
-    }
+.img-wrapper{
+overflow:hidden;
+height:210px;
+position:relative;
+}
 
-    .flag-pill:hover {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: #3b82f6;
-    }
+.match-img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
 
-    .flag-pill img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid #3b82f6;
-      background: var(--flag-icon-bg);
-    }
+.live-badge{
+background:#b91c1c;
+color:white;
+font-size:12px;
+padding:4px 10px;
+border-radius:20px;
+position:absolute;
+top:12px;
+left:12px;
+animation:liveBlink 1s infinite;
+}
 
-    .flag-pill span {
-      font-weight: 600;
-      font-size: 0.8rem;
-      color: var(--flag-text);
-      letter-spacing: 0.2px;
-    }
+@keyframes liveBlink{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+}
 
-    /* 📊 SCORE PILL — live only */
-    .score-sleek {
-      background: linear-gradient(145deg, #1e2d4a, #132036);
-      border-radius: 30px;
-      padding: 0.5rem 1.2rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #3b82f6;
-      color: white;
-      margin: 0.5rem 0 0.9rem;
-      box-shadow: 0 6px 12px -6px #0a0f1c;
-    }
+.scheduled-badge{
+background:rgba(0,0,0,.6);
+color:white;
+font-size:12px;
+padding:4px 10px;
+border-radius:20px;
+position:absolute;
+top:12px;
+left:12px;
+}
 
-    /* 🎬 WATCH BUTTON — extra sleek */
-    .watch-sleek {
-      background: var(--watch-bg);
-      border: none;
-      border-radius: 24px;
-      padding: 1rem 1.2rem;
-      font-weight: 700;
-      font-size: 1rem;
-      text-align: center;
-      margin-top: auto;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: var(--watch-shadow);
-      border: 1px solid #60a5fa60;
-      letter-spacing: 0.5px;
-      backdrop-filter: blur(5px);
-      color: white;
-    }
+.watch-btn{
+background:#2563eb;
+border-radius:50px;
+padding:12px;
+font-weight:600;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+margin-top:12px;
+cursor:pointer;
+}
 
-    .watch-sleek i {
-      margin-right: 8px;
-    }
+.watch-btn:hover{
+background:#1d4ed8;
+}
 
-    .watch-sleek.not-live {
-      background: var(--watch-notlive-bg);
-      box-shadow: none;
-      color: var(--watch-notlive-color);
-      border-color: var(--watch-notlive-border);
-      cursor: not-allowed;
-      pointer-events: none;
-      opacity: 0.7;
-    }
+.not-live{
+background:#334155;
+cursor:not-allowed;
+pointer-events:none;
+}
 
-    /* tournament line */
-    .tourney-sleek {
-      color: #98a9c9;
-      font-weight: 600;
-      font-size: 0.7rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+#qualityModal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+backdrop-filter:blur(6px);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
 
-    .title-sleek {
-      font-size: 1.4rem;
-      font-weight: 800;
-      line-height: 1.25;
-      margin: 0.2rem 0 0.1rem;
-      letter-spacing: -0.3px;
-      background: var(--title-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+#qualityModal.hidden{
+display:none;
+}
 
-    /* meta row */
-    .meta-light {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.7rem;
-      color: var(--meta-color);
-      font-weight: 500;
-      margin: 0.3rem 0 1rem;
-    }
+#qualityModal .modal-content{
+width:90%;
+max-width:360px;
+background:#111827;
+border-radius:18px;
+padding:22px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.7);
+}
 
-    /* modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 6, 18, 0.9);
-      backdrop-filter: blur(18px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
+#qualityModal h2{
+font-size:20px;
+font-weight:600;
+margin-bottom:18px;
+color:#f9fafb;
+}
 
-    .modal-sleek {
-      background: var(--modal-bg);
-      border: 1px solid #3b82f6;
-      border-radius: 3rem;
-      padding: 2.2rem 2rem;
-      width: 90%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 40px 80px -12px rgba(0,0,0,0.5), 0 0 0 1px #3b82f6 inset;
-    }
-    
-    .modal-sleek h3 {
-      color: var(--text-color);
-    }
+#qualityList{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
 
-    .quality-sleek-btn {
-      background: var(--quality-btn-bg);
-      border: 1px solid var(--quality-btn-border);
-      width: 100%;
-      padding: 1.1rem 1.8rem;
-      margin-bottom: 14px;
-      border-radius: 50px;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-color);
-      transition: 0.2s;
-      cursor: pointer;
-    }
+.quality-item{
+background:#1f2937;
+border-radius:12px;
+padding:14px 16px;
+font-size:16px;
+font-weight:500;
+color:#e5e7eb;
+display:flex;
+align-items:center;
+justify-content:space-between;
+cursor:pointer;
+transition:.2s;
+}
 
-    .quality-sleek-btn:hover {
-      background: var(--quality-btn-hover);
-      border-color: #3b82f6;
-      transform: scale(1.02);
-      box-shadow: 0 8px 14px -8px rgba(0,0,0,0.2);
-    }
+.quality-item::after{
+content:">";
+font-size:12px;
+opacity:.7;
+}
 
-    .close-sleek {
-      color: #fca5a5;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 1.2rem;
-      display: inline-block;
-      border-bottom: 2px dotted #f87171;
-      font-size: 0.9rem;
-    }
+.quality-item:hover{
+background:#2563eb;
+color:white;
+transform:translateY(-1px);
+}
 
-    /* grid spacing */
-    .grid-sleek {
-      gap: 2rem;
-    }
-  </style>
+#qualityModal .btn{
+margin-top:16px;
+background:#ef4444;
+color:white;
+border:none;
+border-radius:10px;
+padding:10px;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+}
+
+#qualityModal .btn:hover{
+background:#dc2626;
+}
+
+*{
+-webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+user-select:none;
+}
+
+*{
+-webkit-tap-highlight-color: transparent;
+}
+
+.match-time{
+font-size:13px;
+color:#9ca3af;
+margin-top:6px;
+}
+</style>
 </head>
-<body>
 
-  <!-- header premium sleek -->
-  <div class="text-center mb-14 mt-2">
-    <div class="inline-flex items-center gap-4 py-4 px-10 rounded-full shadow-2xl backdrop-blur-xl transition-all duration-300" style="background: var(--header-bg); border: 1px solid var(--header-border);">
-      <i class="fas fa-bolt text-yellow-400 text-xl"></i>
-      <span class="text-3xl font-black tracking-wider bg-clip-text text-transparent theme-title-gradient" style="background-image: var(--title-gradient);">
-        SPORTLINK
-      </span>
-    </div>
-    <p class="text-gray-500 text-xs mt-4 tracking-[0.3rem] font-mono">Fancode - Sayan</p>
-    
-    <!-- Theme Toggle below header -->
-    <div class="mt-5">
-      <button id="theme-toggle" class="p-3 px-5 rounded-full shadow-lg backdrop-blur-xl transition-all hover:scale-110 active:scale-95"
-              style="background: var(--header-bg); border: 1px solid var(--header-border); color: var(--text-color); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
-        <i class="fas fa-sun" id="theme-icon"></i>
-        <span id="theme-label">Light Mode</span>
-      </button>
-    </div>
+<body class="p-5 max-w-7xl mx-auto">
+
+<!-- HEADER -->
+<div class="text-center mt-4 mb-8">
+  <div class="inline-flex items-center justify-center gap-3 bg-[#131d2f] py-3 px-7 rounded-full border border-blue-900/50">
+    <span class="text-3xl font-black tracking-tight text-white">Fancode</span>
   </div>
+  <p class="text-gray-500 text-sm mt-3 tracking-wide">FANCODE LIVE WEB</p>
+</div>
 
-  <!-- matches container -->
-  <div id="matches-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+<!-- MATCH GRID -->
+<div id="matches-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6"></div>
 
-  <!-- quality modal -->
-  <div id="quality-modal" class="modal-overlay">
-    <div class="modal-sleek">
-      <h3 class="text-2xl font-bold mb-7">select quality</h3>
-      <div id="quality-list" class="mb-4"></div>
-      <div class="close-sleek" onclick="closeModal()">✕ close</div>
-    </div>
+<!-- QUALITY SELECTION MODAL -->
+<div id="qualityModal" class="hidden">
+  <div class="modal-content">
+    <h2>Select Quality</h2>
+    <div id="qualityList"></div>
+    <button onclick="closeQuality()" class="btn">Close</button>
   </div>
+</div>
 
-  <script>
-    const DATA_URL = "https://raw.githubusercontent.com/drmlive/fancode-live-events/refs/heads/main/fancode.json";
-    const PLAYER_URL = "/fc-play?url=";
+<script>
+const DATA_URL = 'https://raw.githubusercontent.com/doctor-8trange/zyphx8/refs/heads/main/data/fancode.json';
+const PLAYER_URL = 'fc-play.html?data=';
+const container = document.getElementById("matches-container");
 
-    const container = document.getElementById('matches-container');
-    let allMatches = [];
+let allMatches = [];
 
-    function renderMatches(matches) {
-      container.innerHTML = '';
+fetch(DATA_URL)
+  .then(res => res.json())
+  .then(data => {
+    allMatches = data.matches || [];
+    container.innerHTML = "";
 
-      matches.forEach((match, idx) => {
-        const isLive = match.status === 'LIVE';
-        const imageSrc = match.src || 'https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg';
-        const category = match.event_category || 'Sports';
-
-        // build team pills
-        let teamHtml = '';
-        if (match.team_1 && match.team_2) {
-          teamHtml = `
-            <div class="flag-strip">
-              <div class="flag-pill">
-                <span>${match.team_1}</span>
-              </div>
-              <div class="flag-pill">
-                <span>${match.team_2}</span>
-              </div>
-              <span class="ml-auto text-[0.65rem] font-bold bg-blue-900/70 px-4 py-1.5 rounded-full border border-blue-600/60">${category}</span>
-            </div>
-          `;
-        }
-
-        // watch button — directly play the m3u8 via proxy
-        const hasStream = isLive && (match.adfree_url || match.dai_url);
-        const watchAction = hasStream ? `playStream(${idx})` : '';
-        const watchBtnClass = hasStream ? 'watch-sleek' : 'watch-sleek not-live';
-        const watchIcon = isLive
-          ? (hasStream ? '<i class="fas fa-play-circle"></i> WATCH LIVE' : '<i class="fas fa-lock"></i> NO STREAM')
-          : '<i class="fas fa-hourglass-half"></i> UPCOMING';
-
-        const card = document.createElement('div');
-        card.className = 'sleek-card';
-
-        card.innerHTML = `
-          <div class="sleek-image">
-            <img src="${imageSrc}" alt="match cover" loading="lazy" onerror="this.src='https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg'">
-            ${isLive ? '<span class="live-glow"><i class="fas fa-circle text-[0.5rem] mr-1 align-middle"></i> LIVE</span>' : ''}
-          </div>
-
-          <div class="p-6 flex flex-col flex-grow">
-            <div class="tourney-sleek">
-              <i class="fas fa-medal text-blue-400"></i> ${match.event_name || 'INTERNATIONAL'}
-            </div>
-
-            <h3 class="title-sleek">${match.title || match.match_name || 'Match'}</h3>
-
-            ${teamHtml}
-
-            <div class="meta-light">
-              <span><i class="far fa-calendar-alt mr-1"></i>${match.startTime || 'TBD'}</span>
-              <span><i class="far fa-clock mr-1"></i>${category}</span>
-            </div>
-
-            <div onclick="${watchAction}" class="${watchBtnClass}">
-              ${watchIcon}
-            </div>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-    }
-
-    // Play stream — navigate to player with proxied m3u8 URL
-    function playStream(index) {
-      const match = allMatches[index];
-      const streamUrl = match.adfree_url || match.dai_url;
-      if (streamUrl) {
-        window.location.href = PLAYER_URL + encodeURIComponent(streamUrl);
-      } else {
-        alert('Stream not available');
-      }
-    }
-
-    // fetch data from drmlive
-    fetch(DATA_URL)
-      .then(res => res.json())
-      .then(data => {
-        allMatches = data.matches || [];
-        renderMatches(allMatches);
-      })
-      .catch(() => {
-        container.innerHTML = '<div class="col-span-full text-center text-gray-600 text-xl">Failed to load matches</div>';
-      });
-
-    // click outside modal
-    window.onclick = function(e) {
-      const modal = document.getElementById('quality-modal');
-      if (e.target === modal) modal.style.display = 'none';
-    };
-
-    // theme toggle
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    
-    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    const savedTheme = localStorage.getItem('theme');
-
-    // Function to apply theme
-    function setTheme(isLight) {
-      const themeLabel = document.getElementById('theme-label');
-      if (isLight) {
-        document.body.classList.add('light-mode');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        themeLabel.textContent = 'Dark Mode';
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.body.classList.remove('light-mode');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        themeLabel.textContent = 'Light Mode';
-        localStorage.setItem('theme', 'dark');
-      }
-    }
-
-    // Initial load
-    if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
-      setTheme(true);
-    } else {
-      setTheme(false);
-    }
-
-    themeToggleBtn.addEventListener('click', () => {
-      const isLightMode = document.body.classList.contains('light-mode');
-      setTheme(!isLightMode);
+    const matches = allMatches.sort((a, b) => {
+      const aLive = (a.status || "").toUpperCase() === "LIVE";
+      const bLive = (b.status || "").toUpperCase() === "LIVE";
+      return bLive - aLive;
     });
-  </script>
+
+    matches.forEach((m, index) => {
+      const isLive = (m.status || "").toUpperCase() === "LIVE";
+      const img = m.image || "https://www.fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg";
+      const card = document.createElement("div");
+      card.className = "match-tile";
+      card.innerHTML = `
+        <div class="img-wrapper">
+          <img src="${img}" class="match-img">
+          ${isLive
+            ? '<span class="live-badge"><i class="fas fa-circle"></i> LIVE</span>'
+            : '<span class="scheduled-badge"><i class="far fa-calendar"></i> SCHEDULED</span>'}
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-xl font-bold">${m.title || 'Match'}</h3>
+          <div class="text-sm text-gray-400 mt-2">${m.tournament || ''}</div>
+          <div class="match-time">${formatDate(m.startTime)}</div>
+          ${isLive
+            ? `<div onclick="openQuality(${index})" class="watch-btn"><i class="fas fa-play"></i> WATCH NOW</div>`
+            : `<div class="watch-btn not-live"><i class="far fa-clock"></i> NOT LIVE</div>`}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  })
+  .catch(() => {
+    container.innerHTML = "<p class='text-center col-span-full'>Failed to load matches</p>";
+  });
+
+function formatDate(time) {
+  if (!time) return "";
+  const d = new Date(time);
+  return d.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+
+function openQuality(index) {
+  const match = allMatches[index];
+  const streamData = match.auto_streams?.[0]?.auto || "";
+
+  if (!streamData) { alert("Stream not available"); return; }
+
+  const lines = streamData.split("\n");
+  let qualities = [];
+
+  lines.forEach((line, i) => {
+    if (line.includes("RESOLUTION=")) {
+      const resolution = line.split("RESOLUTION=")[1].split(",")[0].split("x")[1] + "p";
+      const streamUrl = lines[i + 1].trim();
+      qualities.push({ res: resolution, url: streamUrl });
+    }
+  });
+
+  if (qualities.length === 0) { alert("No stream qualities found"); return; }
+
+  const list = document.getElementById("qualityList");
+  list.innerHTML = "";
+
+  qualities.forEach(q => {
+    const btn = document.createElement("div");
+    btn.className = "quality-item";
+    btn.innerText = q.res;
+    btn.onclick = function () {
+      const encoded = btoa(q.url);
+      window.location.href = PLAYER_URL + encodeURIComponent(encoded);
+    };
+    list.appendChild(btn);
+  });
+
+  document.getElementById("qualityModal").classList.remove("hidden");
+}
+
+function closeQuality() {
+  document.getElementById("qualityModal").classList.add("hidden");
+}
+</script>
+
 </body>
 </html>
