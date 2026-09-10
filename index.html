@@ -215,7 +215,7 @@ margin-top:6px;
 <!-- HEADER -->
 <div class="text-center mt-4 mb-8">
   <div class="inline-flex items-center justify-center gap-3 bg-[#131d2f] py-3 px-7 rounded-full border border-blue-900/50">
-    <span class="text-3xl font-black tracking-tight text-white">Fancode</span>
+    <span class="text-3xl font-black tracking-tight text-white">Sportlink</span>
   </div>
   <p class="text-gray-500 text-sm mt-3 tracking-wide">FANCODE LIVE WEB</p>
 </div>
@@ -233,7 +233,7 @@ margin-top:6px;
 </div>
 
 <script>
-const DATA_URL = 'https://raw.githubusercontent.com/doctor-8trange/zyphx8/refs/heads/main/data/fancode.json';
+const DATA_URL = 'https://raw.githubusercontent.com/kajju027/Fancode-Events-Json/refs/heads/main/fancode.json';
 const PLAYER_URL = 'fc-play.html?data=';
 const container = document.getElementById("matches-container");
 
@@ -281,38 +281,43 @@ fetch(DATA_URL)
 
 function formatDate(time) {
   if (!time) return "";
+  // Try to parse "07:00:00 AM 10-09-2026" format
+  const parts = time.match(/(\d{2}):(\d{2}):(\d{2})\s*(AM|PM)\s*(\d{2})-(\d{2})-(\d{4})/i);
+  if (parts) {
+    let [, hh, mm, ss, ampm, dd, mo, yyyy] = parts;
+    hh = parseInt(hh, 10);
+    if (ampm.toUpperCase() === 'PM' && hh < 12) hh += 12;
+    if (ampm.toUpperCase() === 'AM' && hh === 12) hh = 0;
+    const d = new Date(yyyy, parseInt(mo, 10) - 1, parseInt(dd, 10), hh, parseInt(mm, 10), parseInt(ss, 10));
+    return d.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  }
   const d = new Date(time);
+  if (isNaN(d)) return time;
   return d.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 }
 
 function openQuality(index) {
   const match = allMatches[index];
-  const streamData = match.auto_streams?.[0]?.auto || "";
-
-  if (!streamData) { alert("Stream not available"); return; }
-
-  const lines = streamData.split("\n");
-  let qualities = [];
-
-  lines.forEach((line, i) => {
-    if (line.includes("RESOLUTION=")) {
-      const resolution = line.split("RESOLUTION=")[1].split(",")[0].split("x")[1] + "p";
-      const streamUrl = lines[i + 1].trim();
-      qualities.push({ res: resolution, url: streamUrl });
-    }
-  });
-
-  if (qualities.length === 0) { alert("No stream qualities found"); return; }
+  // Use auto_streams: { ENGLISH: { streams: { "1080p": url, ... } } }
+  const streams = match.auto_streams && match.auto_streams.ENGLISH && match.auto_streams.ENGLISH.streams;
+  if (!streams || Object.keys(streams).length === 0) {
+    alert("Stream not available");
+    return;
+  }
 
   const list = document.getElementById("qualityList");
   list.innerHTML = "";
 
-  qualities.forEach(q => {
+  // Sort qualities high to low
+  const order = ['1080p','720p','540p','480p','360p','240p'];
+  const sortedKeys = Object.keys(streams).sort((a, b) => order.indexOf(b) - order.indexOf(a));
+
+  sortedKeys.forEach(q => {
     const btn = document.createElement("div");
     btn.className = "quality-item";
-    btn.innerText = q.res;
+    btn.innerText = q;
     btn.onclick = function () {
-      const encoded = btoa(q.url);
+      const encoded = btoa(streams[q]);
       window.location.href = PLAYER_URL + encodeURIComponent(encoded);
     };
     list.appendChild(btn);
