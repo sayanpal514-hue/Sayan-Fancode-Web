@@ -1,7 +1,11 @@
 <div align="center">
 
 # ⚽ 🏏 📡 FanCode Live Events Auto-Sync
-| 🌐 Live Website | [FanCode Live — SAYAN](https://sayan-fancode18.pages.dev/) |
+| 🌐 Live Website 
+
+[Fancode Web ](https://famcode10.pages.dev/)
+
+[Fancode Web IOS ](https://famcode10.pages.dev/ios)
 ### by **Sayan Pal**
 
 ✨ A high-availability, fully automated data synchronization project ensuring the FanCode live events list is always fresh and reliable.
