@@ -8,6 +8,13 @@
 [Fancode Web IOS ](https://famcode10.pages.dev/ios)
 ### by **Sayan Pal**
 
+## 📞 Support
+
+Your single click = big help ☕
+
+✨ Click here to support by clicking [ https://sportlink10-ajp.pages.dev/support  ]( https://sportlink10-ajp.pages.dev/support  )✨
+
+
 ✨ A high-availability, fully automated data synchronization project ensuring the FanCode live events list is always fresh and reliable.
 
 ---
