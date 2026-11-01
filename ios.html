@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>SPORTLINK · Fancode Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+  <script src="https://pl31358401.profitableratecpmnetwork.com/a3/81/41/a38141b4ff99f6ef8dbf9dc5f76bd86b.js"></script>
+  <style>
+    :root {
+      --paper:#f6f0df;
+      --paper2:#ffffff;
+      --ink:#0c0c0c;
+      --yellow:#ffd60a;
+      --red:#ff3b30;
+      --blue:#0a84ff;
+      --muted:#6b6252;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+      width:100%; min-height:100%; background:var(--paper);
+      font-family:'Space Grotesk',system-ui,sans-serif; color:var(--ink);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--ink); border-radius:0; }
+
+    /* ─── TELEGRAM BADGE ─── */
+    #tgBadge{
+      position:fixed;
+      top:max(14px,env(safe-area-inset-top));
+      left:max(14px,env(safe-area-inset-left));
+      z-index:10001;
+      display:inline-flex;align-items:center;gap:9px;
+      padding:10px 18px 10px 12px;
+      background:var(--yellow);
+      color:var(--ink);
+      font-size:13.5px;
+      font-weight:700;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      text-decoration:none;
+      border-radius:12px;
+      border:3px solid var(--ink);
+      box-shadow:4px 4px 0 var(--ink);
+      transform:rotate(-2deg);
+      transition:transform .15s,box-shadow .15s,background .15s;
+      -webkit-tap-highlight-color:transparent;
+    }
+    #tgBadge:hover{
+      transform:rotate(0deg) translate(-1px,-1px);
+      box-shadow:6px 6px 0 var(--ink);
+      background:#ffe14d;
+    }
+    #tgBadge:active{
+      transform:translate(4px,4px);
+      box-shadow:0 0 0 var(--ink);
+    }
+    #tgBadge svg{width:20px;height:20px;flex-shrink:0;fill:var(--ink)}
+    #tgBadge span{white-space:nowrap}
+
+    @media (max-width:400px){
+      #tgBadge{padding:8px 14px 8px 9px;font-size:11.5px;gap:7px}
+      #tgBadge svg{width:17px;height:17px}
+    }
+    @media (max-width:340px){
+      #tgBadge span{display:none}
+      #tgBadge{padding:9px 12px}
+    }
+
+    /* ─── LOADER ─── */
+    #overlay {
+      position:fixed; inset:0; background:var(--paper); z-index:9999;
+      display:flex; align-items:center; justify-content:center; flex-direction:column; gap:18px;
+    }
+    #overlay .spinner {
+      width:52px; height:52px; border:4px solid var(--ink); background:var(--yellow);
+      animation:brutalspin 1s steps(4) infinite;
+    }
+    @keyframes brutalspin { to { transform:rotate(360deg); } }
+    #overlay p {
+      color:var(--ink); font-size:12px; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase;
+    }
+
+    /* ─── STATUS TOAST ─── */
+    #status {
+      position:fixed; top:max(14px,env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right));
+      z-index:9997; padding:8px 14px; background:var(--paper2);
+      border:3px solid var(--ink); font-size:12px; font-weight:700;
+      letter-spacing:.5px; text-transform:uppercase;
+      border-radius:10px; pointer-events:none; opacity:0; transition:opacity .3s;
+      box-shadow:3px 3px 0 var(--ink);
+    }
+    #status.show { opacity:1; }
+    #status.warn { background:var(--yellow); }
+    #status.err  { background:var(--red); color:#fff; }
+    #status.ok   { background:var(--yellow); }
+
+    /* ─── HEADER ─── */
+    #app-header {
+      position:sticky; top:0; z-index:100;
+      background:var(--paper);
+      border-bottom:3px solid var(--ink);
+      padding:0 24px;
+    }
+    #header-inner {
+      max-width:1320px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      height:72px; gap:16px;
+    }
+    .logo-wrap { display:flex; align-items:center; gap:12px; }
+    .logo-icon {
+      width:44px; height:44px; border-radius:10px;
+      background:var(--yellow);
+      border:3px solid var(--ink);
+      box-shadow:3px 3px 0 var(--ink);
+      display:flex; align-items:center; justify-content:center;
+      font-size:20px; flex-shrink:0;
+      transform:rotate(-4deg);
+    }
+    .logo-text {
+      font-size:20px; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:var(--ink); line-height:1;
+    }
+    .logo-sub {
+      font-size:9.5px; font-weight:600; color:var(--muted);
+      letter-spacing:2px; text-transform:uppercase; margin-top:4px;
+    }
+    #theme-toggle {
+      display:flex; align-items:center; gap:8px; padding:9px 14px;
+      background:var(--paper2);
+      border:3px solid var(--ink);
+      border-radius:11px;
+      box-shadow:3px 3px 0 var(--ink);
+      color:var(--ink); font-size:11.5px; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase;
+      cursor:pointer; font-family:inherit;
+      transition:transform .1s,box-shadow .1s,background .15s;
+    }
+    #theme-toggle:hover { background:var(--yellow); }
+    #theme-toggle:active { transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+
+    /* ─── LAYOUT ─── */
+    #channel-list { display:none; min-height:100vh; }
+    #channel-list.visible { display:block; }
+    #content-wrap { max-width:1320px; margin:0 auto; padding:28px 24px 48px; }
+
+    /* ─── SECTION HEAD ─── */
+    .section-head { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .live-dot {
+      width:10px; height:10px; border-radius:50%; background:var(--red);
+      border:2px solid var(--ink);
+      animation:pulse 1.2s ease-in-out infinite; flex-shrink:0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    .section-label {
+      font-size:12px; font-weight:700; letter-spacing:2.5px;
+      text-transform:uppercase; color:var(--ink);
+    }
+    .section-count {
+      font-size:11px; font-weight:700; color:#fff;
+      background:var(--red); border:2.5px solid var(--ink);
+      padding:2px 10px; border-radius:8px;
+      box-shadow:2px 2px 0 var(--ink);
+    }
+
+    /* ─── FILTER PILLS ─── */
+    #category-filter {
+      display:flex; gap:8px; margin-bottom:26px;
+      overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+      padding-bottom:4px;
+    }
+    #category-filter::-webkit-scrollbar { display:none; }
+    .filter-pill {
+      flex-shrink:0; padding:8px 18px; border-radius:9px;
+      font-size:11px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; cursor:pointer; white-space:nowrap;
+      background:var(--paper2); color:var(--ink);
+      border:2.5px solid var(--ink); font-family:inherit;
+      box-shadow:2px 2px 0 var(--ink);
+      transition:transform .1s,box-shadow .1s,background .15s;
+    }
+    .filter-pill:hover { background:var(--yellow); }
+    .filter-pill:active { transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+    .filter-pill.active {
+      background:var(--yellow);
+      box-shadow:3px 3px 0 var(--ink);
+    }
+
+    /* ─── AD SLOTS ─── */
+    .ad-slot {
+      width:100%; min-height:60px; margin:0 0 24px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--paper2); border:2px dashed var(--ink);
+      border-radius:12px; overflow:hidden; padding:10px;
+    }
+    .ad-slot:empty { display:none; }
+
+    /* ─── GRID ─── */
+    #ch-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+      gap:22px;
+    }
+
+    /* ─── CARD ─── */
+    .ch-card {
+      background:var(--paper2);
+      border:3px solid var(--ink);
+      border-radius:18px;
+      overflow:hidden;
+      cursor:pointer;
+      color:inherit;
+      display:flex; flex-direction:column;
+      transition:transform .2s, box-shadow .2s;
+      box-shadow:6px 6px 0 var(--ink);
+      -webkit-tap-highlight-color:transparent;
+    }
+    .ch-card:hover {
+      transform:translate(-2px,-2px);
+      box-shadow:8px 8px 0 var(--yellow), 8px 8px 0 3px var(--ink);
+    }
+    .ch-card:active { transform:translate(6px,6px); box-shadow:0 0 0 var(--ink); }
+    .ch-card.disabled { opacity:.6; cursor:not-allowed; }
+    .ch-card.disabled:hover { transform:none; box-shadow:6px 6px 0 var(--ink); }
+
+    .card-thumb {
+      position:relative; width:100%; aspect-ratio:16/9;
+      overflow:hidden; background:var(--ink);
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:3px solid var(--ink);
+    }
+    .card-thumb img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .35s;
+    }
+    .ch-card:hover .card-thumb img { transform:scale(1.04); }
+
+    .card-thumb .thumb-placeholder {
+      width:100%; height:100%;
+      background:linear-gradient(135deg,#222,#111);
+      display:flex; align-items:center; justify-content:center;
+      font-size:48px; font-weight:700; letter-spacing:4px;
+      color:var(--yellow);
+    }
+
+    /* Badges */
+    .badge-live {
+      position:absolute; top:12px; left:12px;
+      display:inline-flex; align-items:center; gap:5px;
+      padding:4px 10px; border-radius:7px;
+      background:var(--red); border:2.5px solid var(--ink);
+      box-shadow:2px 2px 0 var(--ink);
+      font-size:10px; font-weight:700; letter-spacing:1.2px;
+      text-transform:uppercase; color:#fff;
+    }
+    .badge-live::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:#fff; animation:pulse 1.2s ease-in-out infinite;
+    }
+    .badge-upcoming {
+      position:absolute; top:12px; left:12px;
+      padding:4px 10px; border-radius:7px;
+      background:var(--yellow); border:2.5px solid var(--ink);
+      box-shadow:2px 2px 0 var(--ink);
+      font-size:10px; font-weight:700; letter-spacing:1.2px;
+      text-transform:uppercase; color:var(--ink);
+    }
+    .badge-cat {
+      position:absolute; top:12px; right:12px;
+      padding:4px 10px; border-radius:7px;
+      background:var(--paper); border:2.5px solid var(--ink);
+      box-shadow:2px 2px 0 var(--ink);
+      font-size:9px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; color:var(--ink);
+    }
+
+    /* Card body */
+    .card-body {
+      padding:16px 18px 18px; display:flex; flex-direction:column; gap:12px;
+      flex:1;
+    }
+    .card-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .meta-event {
+      font-size:10px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; color:var(--muted);
+    }
+    .meta-lang {
+      font-size:9px; font-weight:700; padding:2.5px 8px; border-radius:6px;
+      background:var(--paper); border:2px solid var(--ink);
+      color:var(--ink); letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .card-title {
+      font-size:16px; font-weight:700; line-height:1.35; color:var(--ink);
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .card-info { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    .info-chip {
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:11px; font-weight:600; color:var(--muted);
+      letter-spacing:.3px;
+    }
+    .info-chip svg { width:13px; height:13px; flex-shrink:0; stroke-width:2.2; }
+
+    .watch-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      padding:13px 0; border-radius:11px;
+      background:var(--yellow);
+      color:var(--ink);
+      font-size:13px; font-weight:700; letter-spacing:1.2px;
+      text-transform:uppercase;
+      border:3px solid var(--ink);
+      box-shadow:4px 4px 0 var(--ink);
+      cursor:pointer; font-family:inherit;
+      transition:transform .1s,box-shadow .1s,background .15s;
+      -webkit-tap-highlight-color:transparent;
+      margin-top:auto;
+    }
+    .watch-btn:hover { background:#ffe14d; }
+    .watch-btn:active { transform:translate(4px,4px); box-shadow:0 0 0 var(--ink); }
+    .watch-btn svg { width:16px; height:16px; }
+    .watch-btn:disabled {
+      background:var(--paper); color:var(--muted); cursor:not-allowed;
+      box-shadow:2px 2px 0 var(--ink);
+    }
+    .watch-btn:disabled:active { transform:none; box-shadow:2px 2px 0 var(--ink); }
+
+    /* ─── EMPTY ─── */
+    #empty-state { display:none; text-align:center; padding:80px 24px; }
+    #empty-state p {
+      color:var(--ink); font-size:14px; font-weight:700;
+      text-transform:uppercase; letter-spacing:2px;
+    }
+
+    /* ─── PLAYER CONTAINER ─── */
+    #player-container {
+      position:fixed; inset:0; background:#000; z-index:9997;
+      display:none; align-items:center; justify-content:center;
+    }
+    #player-container video { width:100%; height:100%; object-fit:contain; }
+    .plyr { height:100%; width:100%; background:#000; }
+    .plyr__controls {
+      background:linear-gradient(0,rgba(0,0,0,.92),transparent)!important;
+      padding:16px!important;
+    }
+    .plyr__control--overlaid {
+      background:var(--yellow)!important;
+      color:var(--ink)!important;
+      border:3px solid var(--ink)!important;
+      box-shadow:5px 5px 0 var(--ink)!important;
+      border-radius:14px!important;
+      width:76px!important;
+      height:76px!important;
+    }
+    .plyr__control--overlaid svg { width:32px!important; height:32px!important; margin-left:4px!important; }
+    .plyr__control--overlaid:hover { background:#ffe14d!important; }
+    .plyr__progress__played { background:var(--yellow)!important; }
+    .plyr__progress__buffer { background:rgba(255,255,255,.2)!important; }
+    .plyr__control svg { fill:currentColor; }
+
+    /* ─── AD CONTAINER ─── */
+    #ad-container {
+      position:absolute; inset:0; z-index:5;
+      background:#000; display:none; overflow:hidden;
+    }
+    #ad-container.active { display:block; }
+    #ad-container video, #ad-container iframe { width:100%; height:100%; }
+
+    /* ─── QUALITY PICKER ─── */
+    #quality-wrap {
+      position:absolute;
+      top:max(14px,env(safe-area-inset-top));
+      right:max(14px,env(safe-area-inset-right));
+      z-index:20;
+      display:none;
+    }
+    #quality-wrap.show { display:block; }
+
+    #quality-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 14px;
+      background:var(--paper);
+      border:3px solid var(--ink);
+      border-radius:11px;
+      box-shadow:3px 3px 0 var(--ink);
+      color:var(--ink);
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      cursor:pointer;
+      font-family:'Space Grotesk',system-ui,sans-serif;
+      transition:transform .1s,box-shadow .1s,background .15s;
+    }
+    #quality-btn:hover { background:var(--yellow); }
+    #quality-btn:active { transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+    #quality-btn svg { width:15px; height:15px; }
+    #quality-btn.open { background:var(--yellow); }
+
+    #quality-menu {
+      position:absolute;
+      top:calc(100% + 10px);
+      right:0;
+      min-width:150px;
+      background:var(--paper);
+      border:3px solid var(--ink);
+      border-radius:14px;
+      padding:8px;
+      box-shadow:5px 5px 0 var(--yellow), 5px 5px 0 3px var(--ink);
+      display:none;
+      max-height:60vh;
+      overflow-y:auto;
+    }
+    #quality-menu.show { display:block; }
+
+    .q-header {
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--muted);
+      padding:4px 10px 8px;
+      border-bottom:2px solid var(--ink);
+      margin-bottom:6px;
+    }
+
+    .q-item {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      width:100%;
+      padding:9px 12px;
+      background:transparent;
+      border:none;
+      border-radius:7px;
+      color:var(--ink);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      font-family:'Space Grotesk',system-ui,sans-serif;
+      cursor:pointer;
+      transition:background .15s;
+      text-align:left;
+    }
+    .q-item:hover { background:var(--yellow); }
+    .q-item.active { background:var(--yellow); }
+    .q-item.active::after {
+      content:'✓';
+      font-weight:700;
+      color:var(--ink);
+    }
+    .q-item .q-auto {
+      font-size:9px;
+      padding:2px 7px;
+      border-radius:5px;
+      background:var(--ink);
+      color:var(--yellow);
+      letter-spacing:1px;
+      font-weight:700;
+    }
+
+    @media (max-width:640px) {
+      #quality-btn span { display:none; }
+      #quality-btn { padding:9px; }
+      #quality-menu { min-width:130px; }
+    }
+
+    @media (max-width:640px){
+      #content-wrap { padding:20px 16px 40px; }
+      #ch-grid { grid-template-columns:1fr; gap:16px; }
+      #header-inner { height:64px; }
+      #app-header { padding:0 16px; }
+      .logo-icon { width:38px; height:38px; font-size:17px; }
+      .logo-text { font-size:17px; letter-spacing:1.5px; }
+      #theme-toggle { padding:7px 10px; font-size:10px; }
+    }
+    @media (min-width:641px) and (max-width:1024px) {
+      #ch-grid { grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); }
+    }
+
+    /* ─── TELEGRAM POPUP ─── */
+    #tgOverlay {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 999999; padding: 20px;
+      animation: fadeInPopup 0.25s ease;
+    }
+    #tgOverlay.show { display: flex; }
+
+    #tgCard {
+      width: 100%; max-width: 400px;
+      background: var(--paper);
+      border: 4px solid var(--ink);
+      border-radius: 22px;
+      padding: 34px 26px 26px;
+      box-shadow: 10px 10px 0 var(--yellow), 10px 10px 0 4px var(--ink);
+      text-align: center;
+    }
+
+    #tgIcon {
+      width: 78px; height: 78px; margin: 0 auto 18px;
+      border-radius: 20px;
+      border: 4px solid var(--ink);
+      background: var(--yellow);
+      box-shadow: 4px 4px 0 var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      transform: rotate(-4deg);
+    }
+    #tgIcon svg { width: 40px; height: 40px; fill: var(--ink); }
+
+    #tgCard h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    #tgCard p {
+      margin: 0 0 24px; color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    .tgBtns { display: flex; gap: 10px; }
+    .tgBtn {
+      flex: 1; height: 46px; border-radius: 11px;
+      font-weight: 700; font-size: 12px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 3px solid var(--ink);
+      font-family: 'Space Grotesk', sans-serif;
+      transition: transform .1s, box-shadow .1s, background .15s;
+    }
+    #joinNow {
+      background: var(--yellow);
+      color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    #joinNow:hover { background: #ffe14d; }
+    #joinNow:active { transform: translate(3px,3px); box-shadow: 0 0 0 var(--ink); }
+    #joinedBtn {
+      background: var(--paper2);
+      color: var(--ink);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    #joinedBtn:hover { background: #eae3cc; }
+    #joinedBtn:active { transform: translate(3px,3px); box-shadow: 0 0 0 var(--ink); }
+
+    @keyframes fadeInPopup {
+      from { opacity: 0; transform: scale(0.94) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @media (max-width: 480px) {
+      #tgCard { padding: 26px 20px 20px; border-radius: 18px; box-shadow: 8px 8px 0 var(--yellow), 8px 8px 0 4px var(--ink); }
+      #tgIcon { width: 64px; height: 64px; border-radius: 16px; }
+      #tgIcon svg { width: 32px; height: 32px; }
+      #tgCard h2 { font-size: 18px; }
+      #tgCard p { font-size: 12px; margin-bottom: 18px; }
+      .tgBtn { height: 42px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ Telegram badge -->
+<a id="tgBadge" href="https://t.me/sportlink10" target="_blank" rel="noopener" title="@SPORTLINK10">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+  </svg>
+  <span>@SPORTLINK10</span>
+</a>
+
+<div id="overlay">
+  <div class="spinner"></div>
+  <p id="loadMsg">Loading matches…</p>
+</div>
+
+<div id="status"></div>
+
+<header id="app-header">
+  <div id="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-text">SPORTLINK</div>
+        <div class="logo-sub">Fancode · Sayan</div>
+      </div>
+    </div>
+    <button id="theme-toggle">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      Light Mode
+    </button>
+  </div>
+</header>
+
+<div id="channel-list">
+  <div id="content-wrap">
+    <div class="ad-slot" id="ad-slot-top"></div>
+
+    <div id="live-section-head" class="section-head" style="display:none;">
+      <span class="live-dot"></span>
+      <span class="section-label">Live Now</span>
+      <span class="section-count" id="live-count">0</span>
+    </div>
+
+    <div id="category-filter"></div>
+
+    <div id="ch-grid"></div>
+    <div id="empty-state"><p>No matches found in this category.</p></div>
+
+    <div class="ad-slot" id="ad-slot-bottom" style="margin-top:24px;"></div>
+  </div>
+</div>
+
+<div id="player-container">
+  <div id="ad-container"></div>
+  <video id="player" playsinline webkit-playsinline controls preload="metadata"></video>
+
+  <div id="quality-wrap">
+    <button id="quality-btn" title="Quality">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span id="quality-label">Auto</span>
+    </button>
+
+    <div id="quality-menu">
+      <div class="q-header">Quality</div>
+      <div id="quality-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tgOverlay">
+  <div id="tgCard">
+    <div id="tgIcon">
+      <svg viewBox="0 0 24 24">
+        <path d="M23.05 2.1L19.6 21.3c-.26 1.15-.94 1.43-1.9.9l-5.26-3.88-2.54 2.45c-.28.28-.52.52-1.06.52l.38-5.4L19.9 5.8c.46-.4-.1-.63-.72-.23L7.5 13.03l-5.24-1.64c-1.14-.36-1.16-1.14.24-1.68L21.6.9c.95-.36 1.78.23 1.45 1.2z"/>
+      </svg>
+    </div>
+    <h2>Join Telegram</h2>
+    <p>Get match links &amp; live updates delivered straight to your phone.</p>
+    <div class="tgBtns">
+      <button class="tgBtn" id="joinedBtn">Already Joined</button>
+      <button class="tgBtn" id="joinNow">Join Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ═══ AD CONFIG ═══ */
+var VAST_TAG   = "";
+var AD_TIMEOUT = 8000;
+
+/* ═══ SOURCE CONFIG ═══ */
+var JSON_URL   = "https://raw.githubusercontent.com/sayanpal514-hue/FANCODE-AUTO-UPDATED-PLAYLIST/refs/heads/main/fancode.json";
+var PROXY_BASE = "https://sportlink-fancode10.pages.dev/api/proxy?u=";
+var USE_PROXY_FOR_STREAMS = true;
+
+/* ═══ DOM ═══ */
+var $overlay   = document.getElementById("overlay");
+var $loadMsg   = document.getElementById("loadMsg");
+var $status    = document.getElementById("status");
+var $list      = document.getElementById("channel-list");
+var $grid      = document.getElementById("ch-grid");
+var $filter    = document.getElementById("category-filter");
+var $pCont     = document.getElementById("player-container");
+var $video     = document.getElementById("player");
+var $themeBtn  = document.getElementById("theme-toggle");
+var $liveHead  = document.getElementById("live-section-head");
+var $liveCount = document.getElementById("live-count");
+var $empty     = document.getElementById("empty-state");
+var $qualityWrap = document.getElementById("quality-wrap");
+var $qualityBtn  = document.getElementById("quality-btn");
+var $qualityMenu = document.getElementById("quality-menu");
+var $qualityList = document.getElementById("quality-list");
+var $qualityLabel= document.getElementById("quality-label");
+
+var _stTmr = null;
+var allMatches = [];
+var currentCategory = 'All';
+var currentHls = null;
+var currentPlayer = null;
+var resumeTmr = null;
+var retryTmr = null;
+var unmuteHandler = null;
+var currentAdsLoader = null;
+var currentAdsManager = null;
+var playToken = 0;
+
+var currentMatchObj = null;
+var currentQualities = {};
+var currentQualityKey = 'auto';
+
+// ── HELPERS ──
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function getInitials(name){
+  var w = String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(!w.length) return '?';
+  return w.length === 1 ? w[0].substring(0,2).toUpperCase() : (w[0][0]+w[1][0]).toUpperCase();
+}
+
+// ── THEME (light mode now just resets to a subtle alternate palette) ──
+var isLight = false;
+$themeBtn.addEventListener('click', function(){
+  isLight = !isLight;
+  if(isLight){
+    document.documentElement.style.setProperty('--paper','#ede5cf');
+    document.documentElement.style.setProperty('--paper2','#fdf8e8');
+    $themeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark Mode';
+  } else {
+    document.documentElement.style.setProperty('--paper','#f6f0df');
+    document.documentElement.style.setProperty('--paper2','#ffffff');
+    $themeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Light Mode';
+  }
+});
+
+// ── TOAST ──
+function toast(msg, type, dur){
+  $status.textContent = msg;
+  $status.className = "show " + (type||"ok");
+  if(_stTmr) clearTimeout(_stTmr);
+  if(dur !== 0) _stTmr = setTimeout(function(){ $status.className = ""; _stTmr = null; }, dur||4000);
+}
+function setMsg(m){ if($loadMsg) $loadMsg.textContent = m; }
+function hideOverlay(){ if($overlay) $overlay.style.display = "none"; }
+function getMatchId(){ return new URLSearchParams(location.search).get("id") || ""; }
+
+/* ── PROXY ── */
+function proxyUrl(url){
+  if(!url) return url;
+  if(!USE_PROXY_FOR_STREAMS) return url;
+  if(url.indexOf(PROXY_BASE) === 0) return url;
+  return PROXY_BASE + encodeURIComponent(url);
+}
+
+/* ── LOAD JSON ── */
+async function loadData(){
+  var r = await fetch(JSON_URL, {cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  var data = await r.json();
+  if(!data || !Array.isArray(data.matches)) throw new Error("Bad JSON shape");
+  if(!data.matches.length) throw new Error("No matches in feed");
+  return data.matches;
+}
+
+function getPlayable(match){
+  if(match.status !== 'LIVE') return null;
+  if(match.auto_streams){
+    var langs = Object.keys(match.auto_streams);
+    for(var i=0;i<langs.length;i++){
+      var lang = langs[i];
+      var entry = match.auto_streams[lang];
+      if(entry && entry.streams){
+        var url = entry.streams['1080p'] || entry.streams['720p']
+               || entry.streams['540p'] || entry.streams['480p']
+               || entry.streams['360p'] || entry.streams['240p'];
+        if(url){ return { url: url, cookie: entry.cookie || '', language: lang }; }
+      }
+    }
+  }
+  if(match.streams && match.streams.primary){
+    return { url: match.streams.primary, cookie: '', language: match.language || '' };
+  }
+  return null;
+}
+
+function buildQualities(match, preferredLang){
+  var out = {};
+  if(match.auto_streams){
+    Object.keys(match.auto_streams).forEach(function(lang){
+      var entry = match.auto_streams[lang];
+      if(!entry || !entry.streams) return;
+      Object.keys(entry.streams).forEach(function(res){
+        var score = (lang === preferredLang) ? 1 : 0;
+        if(!out[res] || score > (out[res]._score || 0)){
+          out[res] = { url: entry.streams[res], cookie: entry.cookie || '', lang: lang, _score: score };
+        }
+      });
+    });
+  }
+  if(!Object.keys(out).length && match.streams && match.streams.primary){
+    out['Auto'] = { url: match.streams.primary, cookie: '', lang: match.language || '' };
+  }
+  return out;
+}
+
+function bestQualityKey(){
+  var order = ['1080p','720p','540p','480p','360p','240p'];
+  for(var i=0;i<order.length;i++){
+    if(currentQualities[order[i]]) return order[i];
+  }
+  if(currentQualities['Auto']) return 'Auto';
+  return null;
+}
+
+// ── FILTERS ──
+function renderFilters(matches){
+  var seen = {}, cats = ['All'];
+  matches.forEach(function(m){ if(m.category) seen[m.category] = true; });
+  Object.keys(seen).sort().forEach(function(c){ cats.push(c); });
+
+  var f = document.createDocumentFragment();
+  cats.forEach(function(cat){
+    var pill = document.createElement('button');
+    pill.className = 'filter-pill' + (cat === currentCategory ? ' active' : '');
+    pill.textContent = cat;
+    pill.dataset.category = cat;
+    pill.addEventListener('click', function(){
+      currentCategory = cat;
+      document.querySelectorAll('.filter-pill').forEach(function(p){
+        p.classList.toggle('active', p.dataset.category === cat);
+      });
+      renderMatches(matches);
+    });
+    f.appendChild(pill);
+  });
+  $filter.innerHTML = '';
+  $filter.appendChild(f);
+}
+
+// ── CARDS ──
+function renderMatches(matches){
+  var filtered = currentCategory === 'All' ? matches
+    : matches.filter(function(m){ return m.category === currentCategory; });
+
+  filtered = filtered.slice().sort(function(a,b){
+    var aLive = a.status === 'LIVE' ? 0 : 1;
+    var bLive = b.status === 'LIVE' ? 0 : 1;
+    if(aLive !== bLive) return aLive - bLive;
+    return String(a.startTime||'').localeCompare(String(b.startTime||''));
+  });
+
+  var liveCount = filtered.filter(function(m){ return m.status === 'LIVE'; }).length;
+  if(liveCount > 0){
+    $liveHead.style.display = 'flex';
+    $liveCount.textContent = liveCount;
+  } else {
+    $liveHead.style.display = 'none';
+  }
+
+  $empty.style.display = filtered.length ? 'none' : 'block';
+  $grid.innerHTML = '';
+  if(!filtered.length) return;
+
+  var f = document.createDocumentFragment();
+  filtered.forEach(function(m){
+    var playable = !!getPlayable(m);
+    var isLive = m.status === 'LIVE';
+    var card = document.createElement('div');
+    card.className = 'ch-card' + (playable ? '' : ' disabled');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', m.title || 'Match');
+
+    var catBadge = m.category ? '<span class="badge-cat">' + esc(m.category) + '</span>' : '';
+    var statusBadge = isLive
+      ? '<span class="badge-live">LIVE</span>'
+      : '<span class="badge-upcoming">UPCOMING</span>';
+
+    var init = getInitials(m.title);
+    var thumbInner = m.image && m.image.trim()
+      ? '<img src="' + esc(m.image) + '" alt="' + esc(m.title) + '" loading="lazy" ' +
+        'onerror="this.onerror=null;this.outerHTML=\'<div class=&quot;thumb-placeholder&quot;>'+init+'</div>\'">'
+      : '<div class="thumb-placeholder">' + init + '</div>';
+
+    var langChip = m.language ? '<span class="meta-lang">' + esc(m.language) + '</span>' : '';
+    var tournamentChip = m.tournament ? '<span class="meta-event">' + esc(m.tournament) + '</span>' : '';
+    var startChip = m.startTime
+      ? '<span class="info-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + esc(m.startTime) + '</span>' : '';
+
+    var btnLabel = playable
+      ? '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch Live'
+      : (isLive ? 'Stream Loading…' : 'Not Started');
+
+    card.innerHTML =
+      '<div class="card-thumb">' + thumbInner + statusBadge + catBadge + '</div>' +
+      '<div class="card-body">' +
+        ((tournamentChip || langChip) ? '<div class="card-meta">' + tournamentChip + langChip + '</div>' : '') +
+        '<div class="card-title">' + esc(m.title) + '</div>' +
+        (startChip ? '<div class="card-info">' + startChip + '</div>' : '') +
+        '<button class="watch-btn"' + (playable ? '' : ' disabled') + '>' + btnLabel + '</button>' +
+      '</div>';
+
+    if(playable){
+      function play(e){
+        e.preventDefault();
+        if(window.history && window.history.pushState)
+          window.history.pushState({}, '', '?id=' + encodeURIComponent(m.match_id));
+        document.title = 'SPORTLINK · ' + m.title;
+        var info = getPlayable(m);
+        setupHLSPlayer(info.url, m.title, info.cookie, m);
+      }
+      card.addEventListener('click', play);
+      card.addEventListener('keydown', function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(e); }
+      });
+    } else {
+      card.addEventListener('click', function(){
+        toast(isLive ? 'Stream not ready yet' : 'Match has not started', 'warn', 3000);
+      });
+    }
+    f.appendChild(card);
+  });
+  $grid.appendChild(f);
+}
+
+// ── RENDER LIST ──
+function renderList(matches){
+  hideOverlay();
+  allMatches = matches;
+  renderFilters(allMatches);
+  renderMatches(allMatches);
+  $list.classList.add('visible');
+}
+
+// ── PLAYER SHOW/HIDE ──
+function showPlayer(){
+  $list.classList.remove('visible');
+  $pCont.style.display = 'flex';
+  if (typeof window.showTelegramPopup === 'function') {
+    window.showTelegramPopup();
+  }
+}
+
+function buildFreshPlayer(){
+  if(currentHls){ try{ currentHls.destroy(); }catch(e){} currentHls = null; }
+  if(currentPlayer){ try{ currentPlayer.destroy(); }catch(e){} currentPlayer = null; }
+
+  $pCont.innerHTML =
+    '<div id="ad-container"></div>' +
+    '<video id="player" playsinline webkit-playsinline controls preload="metadata"></video>' +
+    '<div id="quality-wrap">' +
+      '<button id="quality-btn" title="Quality">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
+        '<span id="quality-label">Auto</span>' +
+      '</button>' +
+      '<div id="quality-menu">' +
+        '<div class="q-header">Quality</div>' +
+        '<div id="quality-list"></div>' +
+      '</div>' +
+    '</div>';
+
+  $video        = document.getElementById('player');
+  $qualityWrap  = document.getElementById('quality-wrap');
+  $qualityBtn   = document.getElementById('quality-btn');
+  $qualityMenu  = document.getElementById('quality-menu');
+  $qualityList  = document.getElementById('quality-list');
+  $qualityLabel = document.getElementById('quality-label');
+
+  bindQualityEvents();
+
+  try {
+    currentPlayer = new Plyr($video, {
+      controls:['play','progress','current-time','mute','volume','captions','settings','fullscreen'],
+      settings:[], autoplay:true, muted:true
+    });
+    setupFullscreenIntercept();
+  } catch(e){}
+}
+
+function setupFullscreenIntercept(){
+  if(!currentPlayer || !currentPlayer.elements || !currentPlayer.elements.buttons) return;
+  var fsBtn = currentPlayer.elements.buttons.fullscreen;
+  if(!fsBtn) return;
+  if(fsBtn.dataset.fsIntercepted === '1') return;
+  var newBtn = fsBtn.cloneNode(true);
+  newBtn.dataset.fsIntercepted = '1';
+  fsBtn.parentNode.replaceChild(newBtn, fsBtn);
+  currentPlayer.elements.buttons.fullscreen = newBtn;
+  newBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    togglePlayerContainerFullscreen();
+  });
+}
+
+async function togglePlayerContainerFullscreen(){
+  var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if(fsEl){
+    try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(e){}
+    try {
+      if(document.exitFullscreen) await document.exitFullscreen();
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } catch(e){}
+  } else {
+    try {
+      if($pCont.requestFullscreen){ await $pCont.requestFullscreen(); }
+      else if($pCont.webkitRequestFullscreen){ $pCont.webkitRequestFullscreen(); }
+      await new Promise(function(r){ setTimeout(r, 100); });
+      try { if(screen.orientation && screen.orientation.lock){ await screen.orientation.lock('landscape'); } } catch(e){}
+    } catch(e){ console.warn('Fullscreen failed:', e); }
+  }
+  syncFullscreenBtnState();
+}
+
+function syncFullscreenBtnState(){
+  if(!currentPlayer || !currentPlayer.elements || !currentPlayer.elements.buttons) return;
+  var btn = currentPlayer.elements.buttons.fullscreen;
+  if(!btn) return;
+  var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  btn.setAttribute('aria-pressed', fsEl ? 'true' : 'false');
+  if(currentPlayer.elements.container){
+    currentPlayer.elements.container.classList.toggle('plyr--fullscreen-active', !!fsEl);
+  }
+}
+
+function handleFullscreenChange(){
+  syncFullscreenBtnState();
+  closeQualityMenu();
+  var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if(!fsEl){
+    try { if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(e){}
+  }
+}
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+
+function bindQualityEvents(){
+  if(!$qualityBtn) return;
+  $qualityBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    $qualityMenu.classList.toggle('show');
+    $qualityBtn.classList.toggle('open');
+  });
+}
+
+function destroyPlayer(){
+  if(retryTmr){ clearTimeout(retryTmr); retryTmr = null; }
+  if(resumeTmr){ clearInterval(resumeTmr); resumeTmr = null; }
+  if(currentAdsManager){ try{ currentAdsManager.destroy(); }catch(e){} currentAdsManager = null; }
+  if(currentAdsLoader){ try{ currentAdsLoader.destroy(); }catch(e){} currentAdsLoader = null; }
+  if(currentPlayer){ try{ currentPlayer.destroy(); }catch(e){} currentPlayer = null; }
+  if(currentHls){ try{ currentHls.destroy(); }catch(e){} currentHls = null; }
+  buildFreshPlayer();
+  if(unmuteHandler){
+    document.removeEventListener('click', unmuteHandler);
+    document.removeEventListener('touchstart', unmuteHandler);
+    unmuteHandler = null;
+  }
+}
+
+function hidePlayer(){
+  playToken++;
+  try {
+    var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    if(fsEl){
+      if(document.exitFullscreen) document.exitFullscreen().catch(function(){});
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+    if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+  } catch(e){}
+  $pCont.style.display = 'none';
+  $list.classList.add('visible');
+  closeQualityMenu();
+  destroyPlayer();
+  if(window.history && window.history.pushState)
+    window.history.pushState({}, document.title, window.location.pathname);
+  document.title = 'SPORTLINK · Fancode Live';
+}
+
+document.addEventListener('click', function(e){
+  if($qualityWrap && $qualityWrap.classList.contains('show') && !$qualityWrap.contains(e.target)){
+    closeQualityMenu();
+  }
+});
+
+function closeQualityMenu(){
+  if($qualityMenu) $qualityMenu.classList.remove('show');
+  if($qualityBtn) $qualityBtn.classList.remove('open');
+}
+
+function updateQualityLabel(){
+  if(!$qualityLabel) return;
+  $qualityLabel.textContent = (currentQualityKey === 'auto') ? 'Auto' : currentQualityKey;
+}
+
+function renderQualityMenu(){
+  if(!$qualityList) return;
+  $qualityList.innerHTML = '';
+
+  var order = ['1080p','720p','540p','480p','360p','240p','Auto'];
+  var keys = Object.keys(currentQualities);
+  keys.sort(function(a,b){
+    var ai = order.indexOf(a), bi = order.indexOf(b);
+    if(ai === -1) ai = 99;
+    if(bi === -1) bi = 99;
+    return ai - bi;
+  });
+
+  var autoBtn = document.createElement('button');
+  autoBtn.className = 'q-item' + (currentQualityKey === 'auto' ? ' active' : '');
+  autoBtn.innerHTML = '<span>Auto</span><span class="q-auto">BEST</span>';
+  autoBtn.onclick = function(){
+    currentQualityKey = 'auto';
+    updateQualityLabel();
+    var best = bestQualityKey();
+    if(best){
+      var q = currentQualities[best];
+      switchQuality(q.url, q.cookie, 'Auto');
+    }
+  };
+  $qualityList.appendChild(autoBtn);
+
+  keys.forEach(function(k){
+    if(k === 'Auto') return;
+    var q = currentQualities[k];
+    var btn = document.createElement('button');
+    btn.className = 'q-item' + (currentQualityKey === k ? ' active' : '');
+    btn.textContent = k;
+    btn.onclick = function(){
+      currentQualityKey = k;
+      updateQualityLabel();
+      switchQuality(q.url, q.cookie, k);
+    };
+    $qualityList.appendChild(btn);
+  });
+
+  updateQualityLabel();
+}
+
+function switchQuality(url, cookie, label){
+  closeQualityMenu();
+  toast('Switching to ' + label + '…', 'warn', 2000);
+
+  var streamUrl = url;
+  if(cookie){
+    streamUrl += (streamUrl.indexOf('?') === -1 ? '?' : '&') + 'hdntl_cookie=' + encodeURIComponent(cookie);
+  }
+  var playUrl = proxyUrl(streamUrl);
+  var isM3U8 = /\.m3u8(\?|$)/i.test(url) || url.indexOf('.m3u8') !== -1;
+  var token = playToken;
+
+  if(currentHls && isM3U8){
+    try {
+      currentHls.stopLoad();
+      currentHls.detachMedia();
+      currentHls.loadSource(playUrl);
+      currentHls.attachMedia($video);
+      currentHls.once(Hls.Events.MANIFEST_PARSED, function(){
+        if(token !== playToken) return;
+        try {
+          if($video.duration && isFinite($video.duration)){
+            $video.currentTime = Math.max(0, $video.duration - 2);
+          }
+        } catch(e){}
+        var p = $video.play();
+        if(p && p.catch) p.catch(function(){});
+        toast('● ' + label, 'ok', 2000);
+      });
+      currentHls.on(Hls.Events.ERROR, function(_, data){
+        if(token !== playToken) return;
+        if(!data.fatal) return;
+        if(data.type === Hls.ErrorTypes.NETWORK_ERROR) currentHls.startLoad();
+        else if(data.type === Hls.ErrorTypes.MEDIA_ERROR) currentHls.recoverMediaError();
+      });
+      return;
+    } catch(e){
+      console.warn('Hls reuse failed, falling back to rebuild:', e);
+    }
+  }
+
+  buildFreshPlayer();
+  var hlsSupported = (typeof Hls !== 'undefined' && Hls.isSupported && Hls.isSupported());
+
+  if(hlsSupported && isM3U8){
+    var hls = new Hls({
+      autoStartLoad:true, enableWorker:true, lowLatencyMode:true,
+      backbufferLength:30, manifestLoadingTimeOut:20000, manifestLoadingMaxRetry:6,
+      levelLoadingTimeOut:20000, fragLoadingTimeOut:30000
+    });
+    currentHls = hls;
+    hls.loadSource(playUrl);
+    hls.attachMedia($video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function(){
+      if(token !== playToken) return;
+      var p = $video.play();
+      if(p && p.catch) p.catch(function(){});
+      toast('● ' + label, 'ok', 2000);
+    });
+    hls.on(Hls.Events.ERROR, function(_, data){
+      if(token !== playToken) return;
+      if(!data.fatal) return;
+      if(data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+      else if(data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+    });
+  } else if($video.canPlayType('application/vnd.apple.mpegurl') && isM3U8){
+    $video.src = playUrl;
+    var p2 = $video.play();
+    if(p2 && p2.catch) p2.catch(function(){});
+    toast('● ' + label, 'ok', 2000);
+  } else {
+    $video.src = playUrl;
+    var p3 = $video.play();
+    if(p3 && p3.catch) p3.catch(function(){});
+    toast('● ' + label, 'ok', 2000);
+  }
+}
+
+/* ═══ AD PLAYBACK ═══ */
+function playAdThenContent(url, name, cookie, token){
+  var canRequest = VAST_TAG && window.google && google.ima && google.ima.AdsLoader;
+  if(!canRequest){ startStream(url, cookie, token); return; }
+  var adContainer = document.getElementById('ad-container');
+  if(!adContainer){ startStream(url, cookie, token); return; }
+  adContainer.classList.add('active');
+  toast('Advertisement','warn',0);
+
+  var done = false;
+  var adTimer = null;
+
+  function finish(){
+    if(done) return;
+    done = true;
+    if(adTimer){ clearTimeout(adTimer); adTimer = null; }
+    if(currentAdsManager){ try{ currentAdsManager.destroy(); }catch(e){} currentAdsManager = null; }
+    if(currentAdsLoader){ try{ currentAdsLoader.destroy(); }catch(e){} currentAdsLoader = null; }
+    var ac = document.getElementById('ad-container');
+    if(ac){ ac.classList.remove('active'); try{ ac.innerHTML = ''; }catch(e){} }
+    if(token !== playToken) return;
+    startStream(url, cookie, token);
+  }
+
+  try {
+    var displayContainer = new google.ima.AdDisplayContainer(adContainer, $video);
+    displayContainer.initialize();
+    var adsLoader = new google.ima.AdsLoader(displayContainer);
+    currentAdsLoader = adsLoader;
+    adsLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, function(e){
+      if(done || token !== playToken){ finish(); return; }
+      try {
+        var mgr = e.getAdsManager($video, null);
+        currentAdsManager = mgr;
+        mgr.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, finish);
+        mgr.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finish);
+        mgr.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, finish);
+        mgr.addEventListener(google.ima.AdEvent.Type.SKIPPED, finish);
+        mgr.init(window.innerWidth, window.innerHeight, google.ima.ViewMode.NORMAL);
+        mgr.start();
+      } catch(err){ finish(); }
+    }, false);
+    adsLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, finish, false);
+    var req = new google.ima.AdsRequest();
+    req.adTagUrl = VAST_TAG;
+    req.linearAdSlotWidth  = window.innerWidth;
+    req.linearAdSlotHeight = window.innerHeight;
+    req.nonLinearAdSlotWidth  = window.innerWidth;
+    req.nonLinearAdSlotHeight = Math.round(window.innerHeight * 0.2);
+    adsLoader.requestAds(req);
+  } catch(e){ finish(); return; }
+  adTimer = setTimeout(finish, AD_TIMEOUT);
+}
+
+/* ═══ HLS STREAM ═══ */
+function startStream(url, cookie, token){
+  if(token !== playToken) return;
+  var streamUrl = url;
+  if(cookie){
+    streamUrl += (streamUrl.indexOf('?') === -1 ? '?' : '&') + 'hdntl_cookie=' + encodeURIComponent(cookie);
+  }
+  var playUrl = proxyUrl(streamUrl);
+  var isM3U8 = /\.m3u8(\?|$)/i.test(url) || url.indexOf('.m3u8') !== -1;
+
+  function startPlayback(){
+    if(token !== playToken) return;
+    hideOverlay();
+    toast('● Live','ok',3000);
+  }
+  function attachUnmute(){
+    if(unmuteHandler){
+      document.removeEventListener('click', unmuteHandler);
+      document.removeEventListener('touchstart', unmuteHandler);
+    }
+    unmuteHandler = function(){
+      try { $video.muted = false; $video.volume = 1; } catch(e){}
+      document.removeEventListener('click', unmuteHandler);
+      document.removeEventListener('touchstart', unmuteHandler);
+      unmuteHandler = null;
+    };
+    document.addEventListener('click', unmuteHandler);
+    document.addEventListener('touchstart', unmuteHandler);
+  }
+
+  var hlsSupported = (typeof Hls !== 'undefined' && Hls.isSupported && Hls.isSupported());
+
+  if(hlsSupported && isM3U8){
+    var hls = new Hls({
+      autoStartLoad:true, enableWorker:true, lowLatencyMode:true,
+      backbufferLength:30, manifestLoadingTimeOut:20000, manifestLoadingMaxRetry:6,
+      levelLoadingTimeOut:20000, fragLoadingTimeOut:30000
+    });
+    currentHls = hls;
+    hls.loadSource(playUrl);
+    hls.attachMedia($video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function(){
+      if(token !== playToken) return;
+      var p = $video.play();
+      if(p && p.catch) p.catch(function(){});
+      hideOverlay();
+      toast('● Live','ok',3000);
+    });
+    hls.on(Hls.Events.ERROR, function(_, data){
+      if(token !== playToken) return;
+      if(!data.fatal) return;
+      toast('Reconnecting…','warn',0);
+      if(retryTmr) clearTimeout(retryTmr);
+      retryTmr = setTimeout(function(){
+        retryTmr = null;
+        if(token !== playToken) return;
+        try {
+          if(data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+          else if(data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+        } catch(e){}
+      }, 2000);
+    });
+  } else if($video.canPlayType('application/vnd.apple.mpegurl') && isM3U8){
+    $video.src = playUrl;
+    $video.addEventListener('loadedmetadata', function onM(){
+      $video.removeEventListener('loadedmetadata', onM);
+      if(token !== playToken) return;
+      startPlayback();
+    });
+  } else {
+    $video.src = playUrl;
+    startPlayback();
+  }
+
+  attachUnmute();
+
+  if(resumeTmr) clearInterval(resumeTmr);
+  var myResumeTmr = setInterval(function(){
+    if(token !== playToken){ clearInterval(myResumeTmr); return; }
+    if($video.paused && $video.readyState > 2){
+      var p = $video.play();
+      if(p && p.catch) p.catch(function(){});
+    }
+  }, 3000);
+  resumeTmr = myResumeTmr;
+}
+
+/* ═══ ENTRY POINT ═══ */
+function setupHLSPlayer(url, name, cookie, match){
+  var token = ++playToken;
+  currentMatchObj = match || null;
+  currentQualityKey = 'auto';
+  showPlayer();
+  destroyPlayer();
+
+  if(match){
+    var info = getPlayable(match);
+    var lang = info ? info.language : (match.language || '');
+    currentQualities = buildQualities(match, lang);
+  } else {
+    currentQualities = {};
+  }
+
+  var keyCount = Object.keys(currentQualities).length;
+  if(keyCount > 1){
+    $qualityWrap.classList.add('show');
+    renderQualityMenu();
+  } else {
+    $qualityWrap.classList.remove('show');
+  }
+
+  toast('Loading…','warn',0);
+  playAdThenContent(url, name, cookie, token);
+}
+
+/* ═══ ERROR ═══ */
+function errMsg(msg){
+  setMsg(msg);
+  $overlay.style.display = 'flex';
+  toast(msg, 'err', 0);
+  $list.classList.add('visible');
+  if($qualityWrap) $qualityWrap.classList.remove('show');
+}
+
+/* ═══ EVENTS ═══ */
+window.addEventListener('popstate', function(){
+  if($pCont.style.display === 'flex') hidePlayer();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && $pCont.style.display === 'flex') hidePlayer();
+});
+
+/* ═══ MAIN ═══ */
+async function main(){
+  var id = getMatchId();
+  var matches;
+  try {
+    setMsg('Loading matches…');
+    matches = await loadData();
+  } catch(e){
+    console.error(e);
+    errMsg('Connection error: ' + e.message);
+    return;
+  }
+  if(!id){ renderList(matches); return; }
+  var m = matches.find(function(x){ return String(x.match_id) === String(id); });
+  if(!m){ errMsg('Match not found.'); return; }
+  var info = getPlayable(m);
+  if(!info){ errMsg('Stream not available for this match yet.'); return; }
+  document.title = 'SPORTLINK · ' + m.title;
+  renderList(matches);
+  setupHLSPlayer(info.url, m.title, info.cookie, m);
+}
+
+document.addEventListener('DOMContentLoaded', main);
+})();
+</script>
+
+<script>
+(function () {
+  var tgOverlay = document.getElementById('tgOverlay');
+  function closePopup() { tgOverlay.classList.remove('show'); }
+  function markSeen() { try { sessionStorage.setItem('tgPopupSeen', '1'); } catch (e) {} }
+  function alreadySeen() {
+    try { return sessionStorage.getItem('tgPopupSeen') === '1'; } catch (e) { return false; }
+  }
+  window.showTelegramPopup = function () {
+    if (alreadySeen()) return;
+    setTimeout(function () { tgOverlay.classList.add('show'); }, 3000);
+  };
+  document.getElementById('joinNow').onclick = function () {
+    markSeen(); window.open('https://t.me/sportlink10', '_blank'); closePopup();
+  };
+  document.getElementById('joinedBtn').onclick = function () { markSeen(); closePopup(); };
+  tgOverlay.addEventListener('click', function (e) {
+    if (e.target === tgOverlay) closePopup();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && tgOverlay.classList.contains('show')) closePopup();
+  });
+})();
+</script>
+</body>
+</html>
